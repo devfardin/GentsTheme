@@ -1,0 +1,8 @@
+.row-item {
+  transition: 0.4s !important; 
+  transform: translateY(0);
+}
+
+.row-item:hover {
+  transform: translateY(-10px);  
+}
