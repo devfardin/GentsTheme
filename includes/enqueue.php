@@ -1,38 +1,48 @@
 <?php
 /**
- * Threshold Wellness Assets Enqueue
+ * GentsTime Assets Enqueue
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-class ThresholdWellnessAssets {
-    
-    public function __construct() {
+class GentsTimeAssets
+{
+
+    public function __construct()
+    {
         add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
         add_action('wp_enqueue_scripts', [$this, 'enqueue_scripts']);
     }
-    
-    public function enqueue_styles() {
-        // Main CSS with optimization
-        // wp_enqueue_style(
-        //     'threshold-wellness-main',
-        //     THRESHOLD_WELLNESS_URL . '/assets/css/main.css',
-        //     [],
-        //     THRESHOLD_WELLNESS_VERSION,
-        //     'all'
-        // );
-        
+
+    public function enqueue_styles()
+    {
+        wp_enqueue_style(
+            'gentstime-main',
+            get_stylesheet_directory_uri() . '/assets/css/main.css',
+            [],
+            GENTSTIME_VERSION,
+            'all'
+        );
+
+        wp_enqueue_style(
+            'gentstime-containder',
+            get_stylesheet_directory_uri() . '/assets/css/container.css',
+            [],
+            GENTSTIME_VERSION,
+            'all'
+        );
     }
-    
-    public function enqueue_scripts() {
-        // wp_enqueue_script(
-        //     'threshold-wellness-main',
-        //     THRESHOLD_WELLNESS_URL . '/assets/js/main.js',
-        //     ['jquery'],
-        //     THRESHOLD_WELLNESS_VERSION,
-        //     true
-        // );
+
+    public function enqueue_scripts()
+    {
+        wp_enqueue_script(
+            'gentstime-main',
+            get_stylesheet_directory_uri() . '/assets/js/main.js',
+            [],
+            GENTSTIME_VERSION,
+            true
+        );
     }
 }
