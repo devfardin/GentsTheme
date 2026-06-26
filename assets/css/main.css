@@ -61,3 +61,13 @@ a {
     --radius: 10px;
     --transition: 0.25s ease;
 }
+
+section {
+    margin-top: 20px;
+}
+
+@media only screen and (min-width: 576px) {
+    section {
+        margin-top: 30px;
+    }
+}

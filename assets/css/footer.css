@@ -36,7 +36,7 @@
 }
 
 .gentstime-footer__logo img {
-    height: 3.8rem;
+    height: 3.8rem !important;
     width: auto;
     object-fit: contain;
 }

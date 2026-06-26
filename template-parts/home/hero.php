@@ -1,4 +1,11 @@
 <?php
+/**
+ * Hero section
+ */
+if (!defined('ABSPATH')) {
+    exit;
+}
+
 $slides = [
     'http://gents-time.local/wp-content/uploads/2026/06/IMG_7788.png',
     'https://public.readdy.ai/ai/img_res/08f17cfcbd905b1fb8adabaecc608f05.jpg',

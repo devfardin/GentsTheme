@@ -18,6 +18,13 @@ class GentsTimeHeader
         add_action('wp_ajax_gentstime_product_search', [$this, 'ajax_product_search']);
         add_action('wp_ajax_nopriv_gentstime_product_search', [$this, 'ajax_product_search']);
 
+        // AJAX cart fragments (badge + mini-cart refresh)
+        add_action('wp_ajax_gentstime_get_cart_fragments', [$this, 'ajax_get_cart_fragments']);
+        add_action('wp_ajax_nopriv_gentstime_get_cart_fragments', [$this, 'ajax_get_cart_fragments']);
+
+        // AJAX remove cart item
+        add_action('wp_ajax_gentstime_remove_cart_item', [$this, 'ajax_remove_cart_item']);
+        add_action('wp_ajax_nopriv_gentstime_remove_cart_item', [$this, 'ajax_remove_cart_item']);
     }
 
     /**
@@ -80,6 +87,61 @@ class GentsTimeHeader
         }
 
         wp_send_json_success($products);
+    }
+
+    /**
+     * AJAX — return fresh badge count + mini-cart HTML + in-cart product IDs
+     */
+    public function ajax_get_cart_fragments()
+    {
+        check_ajax_referer('gentstime_cart_nonce', 'nonce');
+
+        ob_start();
+        woocommerce_mini_cart();
+        $mini_cart_html = ob_get_clean();
+
+        wp_send_json_success(array(
+            'count'       => WC()->cart->get_cart_contents_count(),
+            'mini_cart'   => $mini_cart_html,
+            'product_ids' => self::get_cart_product_ids(),
+        ));
+    }
+
+    /**
+     * AJAX — remove a single item from cart then return fragments
+     */
+    public function ajax_remove_cart_item()
+    {
+        check_ajax_referer('gentstime_cart_nonce', 'nonce');
+
+        $cart_item_key = isset($_POST['cart_item_key']) ? sanitize_text_field($_POST['cart_item_key']) : '';
+
+        if (empty($cart_item_key)) {
+            wp_send_json_error('Missing cart item key');
+        }
+
+        WC()->cart->remove_cart_item($cart_item_key);
+
+        ob_start();
+        woocommerce_mini_cart();
+        $mini_cart_html = ob_get_clean();
+
+        wp_send_json_success(array(
+            'count'       => WC()->cart->get_cart_contents_count(),
+            'mini_cart'   => $mini_cart_html,
+            'product_ids' => self::get_cart_product_ids(),
+        ));
+    }
+
+    /**
+     * Return array of product IDs currently in the cart
+     */
+    public static function get_cart_product_ids()
+    {
+        if (!function_exists('WC') || !WC()->cart) return [];
+        return array_values(array_unique(
+            array_map(fn($item) => (int) $item['product_id'], WC()->cart->get_cart())
+        ));
     }
 
     /**

@@ -55,6 +55,21 @@ class GentsTimeAssets
             GENTSTIME_VERSION,
             'all'
         );
+
+        wp_enqueue_style(
+            'gentstime-woocommerce',
+            get_stylesheet_directory_uri() . '/assets/css/woocommerce.css',
+            [],
+            GENTSTIME_VERSION,
+            'all'
+        );
+        wp_enqueue_style(
+            'gentstime-categories',
+            get_stylesheet_directory_uri() . '/assets/css/categories.css',
+            [],
+            GENTSTIME_VERSION,
+            'all'
+        );
     }
 
     public function enqueue_scripts()
@@ -77,8 +92,10 @@ class GentsTimeAssets
 
         // Localize script for AJAX
         wp_localize_script('gentstime-header', 'headerAjax', array(
-            'ajaxurl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('header_search_nonce')
+            'ajaxurl'     => admin_url('admin-ajax.php'),
+            'nonce'       => wp_create_nonce('header_search_nonce'),
+            'cart_nonce'  => wp_create_nonce('gentstime_cart_nonce'),
+            'cart_ids'    => function_exists('WC') ? GentsTimeHeader::get_cart_product_ids() : [],
         ));
     }
 }
