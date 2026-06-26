@@ -1,0 +1,108 @@
+/* Hero Slider */
+.hero {
+    padding-block: 1rem;
+}
+
+.hero-slider {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.hero-track {
+    display: grid;
+}
+
+.hero-slide {
+    grid-area: 1 / 1;
+    opacity: 0;
+    transition: opacity 0.7s ease;
+    pointer-events: none;
+    height: 155px;
+    width: 100%;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+@media only screen and (min-width: 576px){
+    .hero-slide {
+    height: 210px;
+}
+}
+@media only screen and (min-width: 768px){
+    .hero-slide {
+    height: 280px;
+}
+}
+
+@media only screen and (min-width: 1024px){
+    .hero-slide {
+    height: 340px;
+}
+}
+
+@media only screen and (min-width: 1200px){
+    .hero-slide {
+    height: 500px;
+}
+}
+
+.hero-slide.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+.hero-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.4);
+    color: #fff;
+    border: none;
+    padding: 0.4rem 0.7rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.3s;
+    z-index: 2;
+    display: grid;
+}
+
+.hero-btn:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+.hero-btn:focus {
+    background: rgba(0, 0, 0, 0.7);
+}
+.hero-btn svg{
+    width: 25px;
+    height: 25px;
+}
+
+.hero-btn.prev { left: 1rem; }
+.hero-btn.next { right: 1rem; }
+
+.hero-dots {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+    z-index: 2;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.dot.active {
+    background: #fff;
+    transform: scale(1.3);
+}

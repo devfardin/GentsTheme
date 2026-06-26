@@ -20,6 +20,7 @@ class GentsTimeFunctions {
     
     public function load_dependencies() {
         require_once( GENTSTIME_DIR . 'enqueue.php');
+        require_once( GENTSTIME_DIR . 'header-functions.php');
     }
     
     public function init() {

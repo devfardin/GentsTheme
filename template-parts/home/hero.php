@@ -1,6 +1,7 @@
-<?php 
+<?php
 $slides = [
-    'http://gents-time.local/wp-content/uploads/2026/06/T_1_back.jpg',
+    'http://gents-time.local/wp-content/uploads/2026/06/IMG_7788.png',
+    'https://public.readdy.ai/ai/img_res/08f17cfcbd905b1fb8adabaecc608f05.jpg',
     'https://fashion-cs.wpmethods.com/wp-content/uploads/2026/04/banner-offer.webp',
     'https://fashion-cs.wpmethods.com/wp-content/uploads/2026/04/banner-image-click-shop.png',
 ];
@@ -10,18 +11,30 @@ $slides = [
     <div class="container">
         <div class="hero-slider">
             <div class="hero-track">
-                <?php foreach ( $slides as $i => $src ) : ?>
-                    <div class="hero-slide <?php echo $i === 0 ? 'active' : ''; ?>">
-                        <img src="<?php echo esc_url( $src ); ?>" alt="Slide <?php echo $i + 1; ?>">
+                <?php foreach ($slides as $i => $src): ?>
+                    <div class="hero-slide <?php echo $i === 0 ? 'active' : ''; ?>" data-index="<?php echo $i; ?>"
+                        style="background-image: url(<?php echo esc_url($src); ?>)">
                     </div>
                 <?php endforeach; ?>
             </div>
 
-            <button class="hero-btn prev" aria-label="Previous">&#8592;</button>
-            <button class="hero-btn next" aria-label="Next">&#8594;</button>
+            <button class="hero-btn prev" aria-label="Previous">
+                <svg xmlns="http://www.w3.org/2000/svg" width="37" height="30" viewBox="0 0 37 30" fill="none">
+                    <path
+                        d="M16.6192 6.2125C16.8357 6.38828 16.9573 6.62656 16.9573 6.875C16.9573 7.12344 16.8357 7.36172 16.6192 7.5375L8.95708 13.75L31.2187 13.75C31.5254 13.75 31.8195 13.8488 32.0363 14.0246C32.2532 14.2004 32.375 14.4389 32.375 14.6875C32.375 14.9361 32.2532 15.1746 32.0363 15.3504C31.8195 15.5262 31.5254 15.625 31.2187 15.625L8.95708 15.625L16.6192 21.8375C16.7714 21.9521 16.8826 22.0978 16.9412 22.2594C16.9998 22.421 17.0036 22.5923 16.9522 22.7555C16.9007 22.9187 16.7959 23.0675 16.6489 23.1865C16.5018 23.3054 16.3179 23.39 16.1166 23.4312C15.9156 23.473 15.7044 23.4701 15.5053 23.4228C15.3062 23.3755 15.1264 23.2856 14.985 23.1625L5.34958 15.35C5.13305 15.1742 5.01143 14.9359 5.01143 14.6875C5.01143 14.4391 5.13305 14.2008 5.34958 14.025L14.985 6.2125C15.2018 6.03693 15.4957 5.93832 15.8021 5.93832C16.1085 5.93832 16.4024 6.03693 16.6192 6.2125Z"
+                        fill="white" />
+                </svg>
+            </button>
+            <button class="hero-btn next" aria-label="Next">
+                <svg xmlns="http://www.w3.org/2000/svg" width="37" height="30" viewBox="0 0 37 30" fill="none">
+                    <path
+                        d="M20.3808 23.7875C20.1643 23.6117 20.0427 23.3734 20.0427 23.125C20.0427 22.8766 20.1643 22.6383 20.3808 22.4625L28.0429 16.25H5.78125C5.47459 16.25 5.1805 16.1512 4.96366 15.9754C4.74682 15.7996 4.625 15.5611 4.625 15.3125C4.625 15.0639 4.74682 14.8254 4.96366 14.6496C5.1805 14.4738 5.47459 14.375 5.78125 14.375H28.0429L20.3808 8.1625C20.2286 8.04791 20.1174 7.90216 20.0588 7.7406C20.0002 7.57904 19.9964 7.40765 20.0478 7.24449C20.0993 7.08134 20.2041 6.93246 20.3511 6.81353C20.4982 6.69461 20.6821 6.61004 20.8834 6.56875C21.0844 6.52698 21.2956 6.52989 21.4947 6.57719C21.6938 6.62448 21.8736 6.7144 22.015 6.8375L31.6504 14.65C31.8669 14.8258 31.9886 15.0641 31.9886 15.3125C31.9886 15.5609 31.8669 15.7992 31.6504 15.975L22.015 23.7875C21.7982 23.9631 21.5043 24.0617 21.1979 24.0617C20.8915 24.0617 20.5976 23.9631 20.3808 23.7875Z"
+                        fill="white" />
+                </svg>
+            </button>
 
             <div class="hero-dots">
-                <?php foreach ( $slides as $i => $_ ) : ?>
+                <?php foreach ($slides as $i => $_): ?>
                     <span class="dot <?php echo $i === 0 ? 'active' : ''; ?>" data-index="<?php echo $i; ?>"></span>
                 <?php endforeach; ?>
             </div>

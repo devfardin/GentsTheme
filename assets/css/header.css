@@ -1,0 +1,700 @@
+/* ==========================================================================
+   Header — uses root variables from main.css
+   ========================================================================== */
+
+/* ── Scoped reset ────────────────────────────────────────────────── */
+.site-header *,
+.header-topbar *,
+.offcanvas-panel * {
+    box-sizing: border-box;
+    font-family: var(--font-ui);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   TOP BAR
+   ══════════════════════════════════════════════════════════════════ */
+.header-topbar {
+    background: #000000;
+    padding: 10px 0;
+}
+
+.topbar-inner {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.topbar-notice {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.4px;
+}
+
+.topbar-notice svg {
+    width: 15px;
+    height: 15px;
+    fill: var(--brand);
+    flex-shrink: 0;
+}
+
+.topbar-notice strong {
+    color: var(--brand);
+    font-weight: 600;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   MAIN HEADER
+   ══════════════════════════════════════════════════════════════════ */
+.site-header {
+    background: var(--bg-body);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    transition: box-shadow var(--transition);
+}
+
+.site-header.is-scrolled {
+    box-shadow: var(--shadow-md);
+}
+
+.header-container {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0 40px;
+    height: 74px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   LOGO
+   ══════════════════════════════════════════════════════════════════ */
+.header-logo {
+    flex-shrink: 0;
+}
+
+.header-logo a,
+.header-logo .custom-logo-link {
+    display: flex;
+    align-items: center;
+    line-height: 1;
+    text-decoration: none;
+}
+
+.header-logo img,
+.header-logo .custom-logo {
+    height: 48px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+}
+
+.logo-brand {
+    font-family: var(--font-brand);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   DESKTOP NAVIGATION
+   ══════════════════════════════════════════════════════════════════ */
+.header-nav {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.header-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.header-nav ul li {
+    margin: 0;
+}
+
+.header-nav ul li a {
+    display: block;
+    padding: 7px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: 6px;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    transition: color var(--transition), background var(--transition);
+}
+
+.header-nav ul li a:hover {
+    color: var(--text-primary);
+    background: var(--bg-section);
+}
+
+.header-nav ul li.current-menu-item>a,
+.header-nav ul li.current-menu-ancestor>a {
+    color: var(--brand);
+    background: var(--bg-brand);
+    font-weight: 600;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   DESKTOP SEARCH BAR
+   ══════════════════════════════════════════════════════════════════ */
+.header-search {
+    flex: 1;
+    min-width: 0;
+    max-width: 480px;
+    position: relative;
+}
+
+.search-form {
+    position: relative;
+}
+
+
+
+.search-input {
+    width: 100%;
+    height: 46px;
+    padding: 18px 15px !important;
+    background: var(--bg-section);
+    border: 1.5px solid var(--border);
+    border-radius: 23px;
+    font-size: 14px;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+}
+
+.search-input::placeholder {
+    color: var(--text-secondary) !important;
+    font-size: 13.5px;
+}
+
+.search-input:focus {
+    background: var(--bg-body);
+    border-color: var(--brand-hover) !important;
+    box-shadow: 0 0 0 4px rgba(0, 164, 134, 0.1);
+}
+
+
+
+/* ── Search results dropdown ─────────────────────────────────────── */
+.search-results {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    right: 0;
+    background: var(--bg-body);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    max-height: 420px;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+    display: none;
+    z-index: 200;
+}
+
+.search-results.active {
+    display: block;
+    animation: resultsIn 0.2s ease forwards;
+}
+
+/* Off-canvas search results need higher z-index */
+.offcanvas-search-results {
+    z-index: 300;
+}
+
+@keyframes resultsIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.search-result-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: background var(--transition);
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item:hover {
+    background: var(--bg-section);
+}
+
+.search-result-image {
+    width: 52px;
+    height: 52px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.search-result-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    line-height: 1.35;
+}
+
+.search-result-price {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--brand);
+}
+
+.search-no-results {
+    padding: 28px 16px;
+    text-align: center;
+    font-size: 13.5px;
+    color: var(--text-secondary);
+}
+
+.search-results::-webkit-scrollbar {
+    width: 5px;
+}
+
+.search-results::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.search-results::-webkit-scrollbar-thumb {
+    background: var(--border-dark);
+    border-radius: 4px;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ACTION ICONS
+   ══════════════════════════════════════════════════════════════════ */
+.header-icons {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.header-icon-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: var(--text-secondary);
+    background: transparent;
+    transition: color var(--transition), background var(--transition);
+}
+
+.header-icon-btn svg {
+    width: 26px;
+    height: 26px;
+    fill: currentColor;
+    transition: transform var(--transition);
+}
+
+.header-icon-btn:hover {
+    color: var(--brand);
+    background: var(--bg-brand);
+}
+
+.header-icon-btn:hover svg {
+    transform: translateY(-1px);
+}
+
+.header-icon-btn.whatsapp-btn:hover {
+    color: #128c3e;
+    background: rgba(37, 211, 102, 0.1);
+}
+
+.cart-badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: var(--brand);
+    color: var(--text-white);
+    font-size: 10px;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--bg-body);
+    line-height: 1;
+}
+@media only screen and (min-width: 768px){
+   .cart-badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: var(--brand);
+    color: var(--text-white);
+    font-size: 10px;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--bg-body);
+    line-height: 1;
+} 
+}
+/* ══════════════════════════════════════════════════════════════════
+   HAMBURGER BUTTON — hidden on desktop
+   ══════════════════════════════════════════════════════════════════ */
+.mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    background: none;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+    transition: border-color var(--transition), background var(--transition);
+}
+
+.mobile-menu-toggle .bar {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--text-primary);
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease;
+}
+
+.mobile-menu-toggle:hover {
+    border-color: var(--brand);
+    background: var(--bg-brand);
+}
+
+/* Bars animate to × when panel is open */
+.mobile-menu-toggle[aria-expanded="true"] .bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.mobile-menu-toggle[aria-expanded="true"] .bar:nth-child(2) {
+    opacity: 0;
+    width: 0;
+}
+
+.mobile-menu-toggle[aria-expanded="true"] .bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   OFF-CANVAS OVERLAY
+   ══════════════════════════════════════════════════════════════════ */
+.offcanvas-overlay {
+    position: fixed;
+    inset: 0;
+    /* top/right/bottom/left: 0 */
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 1099;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.offcanvas-overlay.is-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   OFF-CANVAS PANEL
+   ══════════════════════════════════════════════════════════════════ */
+.offcanvas-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 320px;
+    height: 100%;
+    background: var(--bg-body);
+    z-index: 1100;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* Slide in from left */
+    transform: translateX(-100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 4px 0 30px rgba(0, 0, 0, 0.15);
+}
+
+.offcanvas-panel.is-open {
+    transform: translateX(0);
+}
+
+/* ── Panel header: logo + close button ───────────────────────────── */
+.offcanvas-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 20px 18px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.offcanvas-logo a,
+.offcanvas-logo .custom-logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    line-height: 1;
+}
+
+.offcanvas-logo img,
+.offcanvas-logo .custom-logo {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+}
+
+/* Close button */
+.offcanvas-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: var(--bg-section);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background var(--transition), border-color var(--transition);
+    flex-shrink: 0;
+}
+
+.offcanvas-close svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--text-secondary);
+    transition: fill var(--transition);
+}
+
+.offcanvas-close:hover {
+    background: var(--bg-brand);
+    border-color: var(--brand);
+}
+
+.offcanvas-close:hover svg {
+    fill: var(--brand);
+}
+
+/* ── Search inside panel ─────────────────────────────────────────── */
+.offcanvas-search {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    position: relative;
+}
+
+/* Reuse search-input styles, but override radius for off-canvas */
+.offcanvas-search .search-input {
+    height: 44px;
+    border-radius: 22px;
+    font-size: 14px;
+}
+
+/* ── Nav menu inside panel ───────────────────────────────────────── */
+.offcanvas-nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 12px 32px;
+}
+
+.offcanvas-nav::-webkit-scrollbar {
+    width: 4px;
+}
+
+.offcanvas-nav::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.offcanvas-nav::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+}
+
+/* WordPress generated ul */
+.offcanvas-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.offcanvas-nav ul li {
+    margin: 0;
+}
+
+.offcanvas-nav ul li a {
+    display: flex;
+    align-items: center;
+    padding: 13px 16px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: color var(--transition), background var(--transition);
+}
+
+.offcanvas-nav ul li a:hover {
+    color: var(--text-primary);
+    background: var(--bg-section);
+}
+
+.offcanvas-nav ul li.current-menu-item>a {
+    color: var(--brand);
+    background: var(--bg-brand);
+    font-weight: 600;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   RESPONSIVE — TABLET  (≤ 1080px desktop nav shrinks)
+   ══════════════════════════════════════════════════════════════════ */
+@media (max-width: 1080px) {
+    .header-container {
+        gap: 20px;
+    }
+
+    .header-nav ul li a {
+        padding: 7px 10px;
+        font-size: 13.5px;
+    }
+
+    .header-search {
+        max-width: 300px;
+    }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   RESPONSIVE — TABLET / MOBILE  (≤ 768px)
+   Hide: desktop nav, desktop search
+   Show: hamburger, icons only
+   ══════════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .topbar-inner {
+        padding: 0 16px;
+    }
+
+    .topbar-notice {
+        font-size: 12px;
+        gap: 6px;
+    }
+
+    /* Compact header row */
+    .header-container {
+        height: 64px;
+        padding: 0 16px;
+        gap: 8px;
+    }
+
+    /* Hide desktop nav and search bar */
+    .header-nav {
+        display: none;
+    }
+
+    .header-search {
+        display: none;
+    }
+
+    /* Show hamburger */
+    .mobile-menu-toggle {
+        display: flex;
+    }
+
+    /* Push icons to the right of logo */
+    .header-logo {
+        flex: 1;
+    }
+
+    /* Slightly smaller icons on tablet */
+    .header-icon-btn {
+        width: 44px;
+        height: 44px;
+    }
+
+    .header-icon-btn svg {
+        width: 23px;
+        height: 23px;
+    }
+
+    .header-logo img,
+    .header-logo .custom-logo {
+        height: 40px;
+    }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   RESPONSIVE — SMALL MOBILE  (≤ 480px)
+   ══════════════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+    .header-container {
+        padding: 0 12px;
+        gap: 6px;
+    }
+
+    .header-icon-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .header-icon-btn svg {
+        width: 25px;
+        height: 25px;
+    }
+
+    /* Narrower panel on very small phones */
+    .offcanvas-panel {
+        width: 290px;
+    }
+}
