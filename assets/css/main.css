@@ -62,12 +62,40 @@ a {
     --transition: 0.25s ease;
 }
 
+button {
+    background: var(--brand);
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    transition: all 0.4s;
+}
+
+button:hover {
+    background: var(--brand-hover);
+}
+
 section {
-    margin-top: 20px;
+    margin-top: 25px;
 }
 
 @media only screen and (min-width: 576px) {
     section {
-        margin-top: 30px;
+        margin-top: 35px;
+    }
+}
+
+.section_title {
+    font-size: 25px;
+    font-weight: 500;
+    color: var(--text-primary);
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+@media only screen and (min-width:768px) {
+    .section_title {
+        font-size: 30px;
+        margin-bottom: 20px;
     }
 }

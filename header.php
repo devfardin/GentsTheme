@@ -43,7 +43,7 @@ if (!defined('ABSPATH')) {
          MAIN HEADER
          ============================================= -->
     <header id="masthead" class="site-header">
-        <div class="header-container">
+        <div class="header-container container">
 
             <!-- LOGO -->
             <div class="header-logo">

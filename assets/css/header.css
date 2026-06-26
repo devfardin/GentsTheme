@@ -67,13 +67,11 @@
 }
 
 .header-container {
-    max-width: 1320px;
-    margin: 0 auto;
-    padding: 0 40px;
     height: 74px;
     display: flex;
     align-items: center;
     gap: 32px;
+    justify-content: space-between;
 }
 
 /* ══════════════════════════════════════════════════════════════════

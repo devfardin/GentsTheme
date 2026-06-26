@@ -12,7 +12,7 @@ $categories = get_terms(
     ?>
 <section class="gt-categories">
     <div class="container">
-        <h2> Product Categories </h2>
+        <h2 class="section_title"> Product Categories </h2>
         <div class="gt-categories__grid">
             <?php foreach ($categories as $category): ?>
                 <div class="category">
