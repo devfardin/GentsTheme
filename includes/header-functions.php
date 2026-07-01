@@ -96,12 +96,16 @@ class GentsTimeHeader
     {
         check_ajax_referer('gentstime_cart_nonce', 'nonce');
 
+        if ( ! function_exists('WC') || ! WC()->cart ) {
+            wp_send_json_error('Cart unavailable');
+        }
+
         ob_start();
         woocommerce_mini_cart();
         $mini_cart_html = ob_get_clean();
 
         wp_send_json_success(array(
-            'count'       => WC()->cart->get_cart_contents_count(),
+            'count'       => (int) WC()->cart->get_cart_contents_count(),
             'mini_cart'   => $mini_cart_html,
             'product_ids' => self::get_cart_product_ids(),
         ));
@@ -114,10 +118,19 @@ class GentsTimeHeader
     {
         check_ajax_referer('gentstime_cart_nonce', 'nonce');
 
-        $cart_item_key = isset($_POST['cart_item_key']) ? sanitize_text_field($_POST['cart_item_key']) : '';
+        if ( ! function_exists('WC') || ! WC()->cart ) {
+            wp_send_json_error('Cart unavailable');
+        }
 
-        if (empty($cart_item_key)) {
+        $cart_item_key = isset($_POST['cart_item_key']) ? sanitize_key($_POST['cart_item_key']) : '';
+
+        if ( empty($cart_item_key) ) {
             wp_send_json_error('Missing cart item key');
+        }
+
+        /* Confirm the key actually exists in this session's cart */
+        if ( ! WC()->cart->get_cart_item($cart_item_key) ) {
+            wp_send_json_error('Invalid cart item key');
         }
 
         WC()->cart->remove_cart_item($cart_item_key);
@@ -127,7 +140,7 @@ class GentsTimeHeader
         $mini_cart_html = ob_get_clean();
 
         wp_send_json_success(array(
-            'count'       => WC()->cart->get_cart_contents_count(),
+            'count'       => (int) WC()->cart->get_cart_contents_count(),
             'mini_cart'   => $mini_cart_html,
             'product_ids' => self::get_cart_product_ids(),
         ));

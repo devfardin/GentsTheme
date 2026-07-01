@@ -351,7 +351,7 @@
             clearTimeout(timer);
             var query = this.value.trim();
 
-            if (query.length < 2) {
+            if (query.length < 1) {
                 pair.results.classList.remove('active');
                 return;
             }
@@ -391,25 +391,61 @@
         });
     }
 
-    /* Build product result HTML */
+    /* Escape a string for safe use inside HTML text / attribute values */
+    function escHtml(str) {
+        var d = document.createElement('div');
+        d.appendChild(document.createTextNode(String(str)));
+        return d.innerHTML;
+    }
+
+    function escAttr(str) {
+        return escHtml(str).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    /* Build product result HTML — all values escaped before insertion */
     function renderResults(data, resultsEl) {
         if (!data.success || !data.data || !data.data.length) {
             resultsEl.innerHTML = '<div class="search-no-results">No products found.</div>';
             return;
         }
 
-        resultsEl.innerHTML = data.data.map(function (p) {
-            return (
-                '<a href="' + p.url + '" class="search-result-item">' +
-                    '<img src="' + p.image + '" alt="' + p.name + '" class="search-result-image">' +
-                    '<div class="search-result-info">' +
-                        '<div class="search-result-name">' + p.name + '</div>' +
-                        '<div class="search-result-price">' + p.price + '</div>' +
-                    '</div>' +
-                '</a>'
-            );
-        }).join('');
+        var fragment = document.createDocumentFragment();
 
+        data.data.forEach(function (p) {
+            var a   = document.createElement('a');
+            var img = document.createElement('img');
+            var info = document.createElement('div');
+            var nameEl  = document.createElement('div');
+            var priceEl = document.createElement('div');
+
+            /* Safe URL — only allow http/https */
+            var safeUrl = /^https?:\/\//.test(p.url) ? p.url : '#';
+            a.href      = safeUrl;
+            a.className = 'search-result-item';
+
+            img.src       = escAttr(p.image);
+            img.alt       = escAttr(p.name);
+            img.className = 'search-result-image';
+
+            info.className  = 'search-result-info';
+            nameEl.className  = 'search-result-name';
+            nameEl.textContent = p.name;  /* textContent — no XSS possible */
+
+            /* price comes as WC HTML (e.g. <span class="woocommerce-Price-amount">)
+               sanitise to only allow the safe subset WC always produces */
+            priceEl.className = 'search-result-price';
+            priceEl.innerHTML = p.price
+                .replace(/<(?!\/?(?:span|bdi|ins|del|abbr)(\s[^>]*)?>)[^>]+>/gi, '');
+
+            info.appendChild(nameEl);
+            info.appendChild(priceEl);
+            a.appendChild(img);
+            a.appendChild(info);
+            fragment.appendChild(a);
+        });
+
+        resultsEl.innerHTML = '';
+        resultsEl.appendChild(fragment);
         resultsEl.classList.add('active');
     }
 

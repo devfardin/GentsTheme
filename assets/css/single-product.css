@@ -1,0 +1,352 @@
+/* ==========================================================================
+   GentsTime — Single Product Page
+   ========================================================================== */
+
+.gt-single-product {
+    padding-block: 40px 80px;
+}
+
+/* ── Two-column layout ─────────────────────────────────────────── */
+.gt-sp-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: start;
+    margin-bottom: 60px;
+}
+
+/* ── Gallery ───────────────────────────────────────────────────── */
+.gt-sp-gallery .woocommerce-product-gallery {
+    float: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    position: sticky;
+    top: 100px;
+}
+
+.gt-sp-gallery .woocommerce-product-gallery__wrapper img {
+    border-radius: 14px;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.gt-sp-gallery .flex-viewport {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+}
+
+.gt-sp-gallery .flex-control-thumbs {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 0;
+    list-style: none;
+}
+
+.gt-sp-gallery .flex-control-thumbs li {
+    flex: 0 0 calc(25% - 6px);
+}
+
+.gt-sp-gallery .flex-control-thumbs img {
+    border-radius: 8px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+    aspect-ratio: 1;
+    object-fit: cover;
+}
+
+.gt-sp-gallery .flex-control-thumbs .flex-active {
+    border-color: var(--brand);
+}
+
+/* ── Summary ───────────────────────────────────────────────────── */
+.gt-sp-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.gt-sp-cat a {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: var(--brand);
+}
+
+.gt-sp-cat a:hover { color: var(--brand-hover); }
+
+.gt-sp-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.3;
+}
+
+/* Rating */
+.gt-sp-rating {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.gt-sp-rating .gt-star {
+    width: 16px;
+    height: 16px;
+    fill: #d1d5db;
+    flex-shrink: 0;
+}
+
+.gt-sp-rating .gt-star--on { fill: #f59e0b; }
+
+.gt-sp-rating-count {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-left: 4px;
+}
+
+/* Price */
+.gt-sp-price .price {
+    display: flex !important;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.gt-sp-price .woocommerce-Price-amount {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text-primary);
+}
+
+.gt-sp-price del .woocommerce-Price-amount {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+.gt-sp-price ins {
+    text-decoration: none;
+}
+
+.gt-sp-price ins .woocommerce-Price-amount {
+    color: #ef4444;
+}
+
+/* Short Description */
+.gt-sp-short-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    border-top: 1px solid var(--border);
+    padding-top: 18px;
+}
+
+/* Add to Cart form */
+.gt-sp-form .quantity {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    width: fit-content;
+    margin-bottom: 14px;
+}
+
+.gt-sp-form .quantity input[type="number"] {
+    width: 52px;
+    height: 44px;
+    text-align: center;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    background: transparent;
+    -moz-appearance: textfield;
+}
+
+.gt-sp-form .quantity input::-webkit-inner-spin-button,
+.gt-sp-form .quantity input::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+.gt-sp-form .single_add_to_cart_button {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 50px;
+    padding: 0 30px;
+    background: var(--brand) !important;
+    color: #fff !important;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: background 0.25s ease, transform 0.15s ease;
+    width: 100%;
+}
+
+.gt-sp-form .single_add_to_cart_button:hover {
+    background: var(--brand-hover) !important;
+    transform: translateY(-1px);
+}
+
+.gt-sp-form .woocommerce-variation-add-to-cart {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Variable product swatches / selects */
+.gt-sp-form .variations {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.gt-sp-form .variations td,
+.gt-sp-form .variations th {
+    padding: 6px 0;
+    vertical-align: middle;
+}
+
+.gt-sp-form .variations label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    padding-right: 16px;
+}
+
+.gt-sp-form .variations select {
+    width: 100%;
+    height: 44px;
+    padding: 0 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 14px;
+    color: var(--text-primary);
+    background: var(--bg-body);
+    outline: none;
+    cursor: pointer;
+}
+
+.gt-sp-form .variations select:focus {
+    border-color: var(--brand);
+}
+
+/* Meta (SKU, Categories) */
+.gt-sp-meta .product_meta {
+    font-size: 13px;
+    color: var(--text-secondary);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+}
+
+.gt-sp-meta .product_meta span { display: block; }
+.gt-sp-meta .product_meta a { color: var(--brand); }
+.gt-sp-meta .product_meta a:hover { color: var(--brand-hover); }
+
+/* ── Tabs ──────────────────────────────────────────────────────── */
+.gt-sp-tabs .woocommerce-tabs {
+    margin-bottom: 60px;
+}
+
+.gt-sp-tabs .woocommerce-tabs ul.tabs {
+    display: flex;
+    gap: 0;
+    padding: 0;
+    margin: 0 0 -1px;
+    list-style: none;
+    border-bottom: 2px solid var(--border);
+}
+
+.gt-sp-tabs .woocommerce-tabs ul.tabs::before,
+.gt-sp-tabs .woocommerce-tabs ul.tabs li::before,
+.gt-sp-tabs .woocommerce-tabs ul.tabs li::after {
+    display: none !important;
+}
+
+.gt-sp-tabs .woocommerce-tabs ul.tabs li {
+    margin: 0;
+    padding: 0;
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+.gt-sp-tabs .woocommerce-tabs ul.tabs li a {
+    display: block;
+    padding: 12px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.gt-sp-tabs .woocommerce-tabs ul.tabs li.active a,
+.gt-sp-tabs .woocommerce-tabs ul.tabs li a:hover {
+    color: var(--brand);
+    border-bottom-color: var(--brand);
+}
+
+.gt-sp-tabs .woocommerce-tabs .panel {
+    padding: 30px 0 0;
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--text-secondary);
+}
+
+/* Reviews */
+.gt-sp-tabs #reviews #comments ol.commentlist {
+    padding: 0;
+    list-style: none;
+}
+
+.gt-sp-tabs #reviews #comments ol.commentlist li .comment_container {
+    display: flex;
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+/* ── Related Products ──────────────────────────────────────────── */
+.gt-single-product .related.products > h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 24px;
+}
+
+/* ── Responsive ────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+    .gt-sp-layout {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .gt-sp-gallery .woocommerce-product-gallery {
+        position: static;
+    }
+
+    .gt-sp-title { font-size: 22px; }
+}
+
+@media (max-width: 640px) {
+    .gt-single-product { padding-block: 24px 60px; }
+    .gt-sp-layout { gap: 20px; margin-bottom: 40px; }
+    .gt-sp-title { font-size: 20px; }
+    .gt-sp-price .woocommerce-Price-amount { font-size: 22px; }
+    .gt-sp-tabs .woocommerce-tabs ul.tabs li a { padding: 10px 14px; font-size: 13px; }
+}

@@ -207,8 +207,7 @@ if (!defined('ABSPATH')) {
         </div>
         <?php if (function_exists('wc_get_cart_url')): ?>
         <div class="cart-sidebar-footer">
-            <a href="<?php echo esc_url(wc_get_cart_url()); ?>" class="cart-sidebar-view-btn">View Cart</a>
-            <a href="<?php echo esc_url(wc_get_checkout_url()); ?>" class="cart-sidebar-checkout-btn">Checkout</a>
+            <a href="<?php echo esc_url( wc_get_checkout_url() ); ?>" class="cart-sidebar-checkout-btn" style="width:100%;">Proceed to Checkout</a>
         </div>
         <?php endif; ?>
     </div>

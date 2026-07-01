@@ -13,7 +13,7 @@ body {
     font-size: 16px;
     line-height: 1.6;
     color: #1a1a1a;
-    background-color: #fff;
+    background-color: var(--bg-body);
     font-family: "Manrope", sans-serif !important;
     font-optical-sizing: auto;
     font-style: normal;
@@ -29,52 +29,143 @@ a {
     text-decoration: none;
 }
 
-/* ── CSS Variables ───────────────────────────────────────────────── */
-:root {
-    /* Brand */
-    --brand: #00A486;
-    --brand-hover: #008E74;
-    --brand-soft: #E5F7F4;
 
-    /* Text */
-    --text-primary: #171717;
-    --text-secondary: #737373;
+/* ── CSS Variables ───────────────────────────────────────────────── */
+
+:root {
+
+    /* ==========================
+       Brand Colors
+    ========================== */
+
+    --brand: #C9A84C;
+    --brand-hover: #A8893A;
+    --brand-light: #D8BE72;
+    --brand-soft: #E9D7A5;
+    --brand-dark: #8B6B1E;
+
+    /* ==========================
+       Text Colors
+    ========================== */
+
+    --text-primary: #1A1A1A;
+    --text-secondary: #5F5F5F;
+    --text-muted: #8A8A8A;
     --text-white: #FFFFFF;
 
-    /* Background */
-    --bg-body: #FFFFFF;
-    --bg-section: #FAFAFA;
-    --bg-brand: #E5F7F4;
+    /* ==========================
+       Background Colors
+    ========================== */
 
-    /* Border */
-    --border: #E5E5E5;
-    --border-dark: #D4D4D4;
+    --bg-body: #FAF8F4;
+    --bg-section: #F3EFE8;
+    --bg-card: #FFFFFF;
+    --bg-dark: #121212;
+    --bg-footer: #1A1A1A;
+    --bg-brand: #F7F2E5;
 
-    /* Shadow */
-    --shadow: rgba(0, 0, 0, 0.08);
+    /* ==========================
+       Border Colors
+    ========================== */
 
-    --font-ui: 'Inter', sans-serif;
+    --border: rgba(201, 168, 76, 0.25);
+    --border-light: #E8E2D7;
+    --border-dark: #D5D0C8;
+
+    /* ==========================
+       Status Colors
+    ========================== */
+
+    --success: #2E7D32;
+    --warning: #E6A700;
+    --danger: #C62828;
+    --info: #1565C0;
+
+    /* ==========================
+       Shadow
+    ========================== */
+
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, .05);
+    --shadow: 0 8px 25px rgba(0, 0, 0, .08);
+    --shadow-lg: 0 15px 40px rgba(0, 0, 0, .12);
+
+    /* ===========================
+       Fonts
+    =============================== */
+
+    --font-ui: "Manrope", sans-serif;
     --font-brand: 'Playfair Display', serif;
-    --shadow-sm: 0 1px 4px rgba(0, 0, 0, .06);
-    --shadow-md: 0 4px 20px rgba(0, 0, 0, .09);
-    --shadow-lg: 0 8px 32px rgba(0, 0, 0, .13);
+
+    /* ===========================
+       Border Radius
+    =============================== */
+
+    --radius-xm: 4px;
+    --radius-sm: 6px;
     --radius: 10px;
-    --transition: 0.25s ease;
+
+    /* ==========================
+       Overlay
+    ========================== */
+
+    --overlay-light: rgba(255, 255, 255, .75);
+    --overlay-dark: rgba(0, 0, 0, .55);
+
+    --transition: 0.4s ease;
+
 }
 
-button {
-    background: var(--brand);
-    color: white;
-    font-size: 16px;
-    font-weight: 500;
+/* ===============================
+ button style
+================================= */
+.btn-outline {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    background: transparent;
+    color: var(--brand);
+    border: 2px solid var(--brand);
+    padding: 14px 40px;
+    cursor: pointer;
+    transition: var(--transition);
     text-align: center;
-    transition: all 0.4s;
 }
 
-button:hover {
-    background: var(--brand-hover);
+.btn-outline:hover {
+    background: var(--brand);
+    color: var(--text-white);
 }
 
+.btn-primary {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: .90rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    background: var(--brand);
+    color: var(--text-white);
+    border: 2px solid var(--brand);
+    padding: 14px 40px;
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: center;
+    border-radius: var(--radius-sm);
+    width: 100%;
+}
+
+.btn-primary:hover {
+    border: 2px solid var(--brand);
+    color: var(--brand);
+    background: transparent;
+}
+
+
+
+/* ========================
+ Section Style
+ ========================== */
 section {
     margin-top: 25px;
 }
@@ -98,4 +189,69 @@ section {
         font-size: 30px;
         margin-bottom: 20px;
     }
+}
+
+/* ── Breadcrumb ──────────────────────────────────────────────────── */
+.breadcrumb-bar {
+    background: var(--bg-brand);
+    border-bottom: 1px solid var(--border);
+    padding: 40px 0;
+    text-align: center;
+}
+
+.breadcrumb-title {
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+@media only screen and (min-width: 768px) {
+    .breadcrumb-title {
+        font-size: 28px;
+    }
+}
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 16px;
+    color: var(--text-secondary);
+}
+
+.breadcrumb a {
+    color: var(--brand);
+    transition: color var(--transition);
+}
+
+.breadcrumb a:hover {
+    color: var(--brand-hover);
+}
+
+.breadcrumb-sep {
+    font-size: 16px;
+    color: var(--border-dark);
+}
+
+.breadcrumb-current {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* ===================
+ input style
+===================== */
+input[text] {
+    background-clip: padding-box;
+    border: 1px solid var(--brand);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-family: var(--font-ui);
+    line-height: 1;
+    margin-bottom: 0;
+    max-width: 100%;
+    padding: 11px 15px;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }

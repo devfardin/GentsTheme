@@ -1,0 +1,124 @@
+/* ── Mobile Bottom Navigation Bar ───────────────────────────────── */
+
+.gt-mobile-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border-light);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+    padding-bottom: env(safe-area-inset-bottom);
+}
+
+@media only screen and (max-width: 767px) {
+    .gt-mobile-nav {
+        display: block;
+    }
+
+    /* Push page content above the nav bar */
+    body {
+        padding-bottom: 72px;
+    }
+}
+
+.gt-mobile-nav__list {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    height: 55px;
+    justify-content: space-between;
+}
+
+.gt-mobile-nav__item {
+    flex: 1;
+}
+
+.gt-mobile-nav__link {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: color var(--transition);
+    position: relative;
+    padding: 8px 4px;
+}
+
+.gt-mobile-nav__link:hover,
+.gt-mobile-nav__link.active {
+    color: var(--brand);
+}
+
+.gt-mobile-nav__icon {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    fill: currentColor;
+}
+
+/* ── Center/Highlighted Item (Home) ─────────────────────────────── */
+
+.gt-mobile-nav__item--highlight {
+    position: relative;
+    z-index: 1;
+}
+
+.gt-mobile-nav__item--highlight .gt-mobile-nav__link {
+    color: var(--text-white);
+    background: var(--brand);
+    border-radius: 100%;
+    width: 62px;
+    height: 62px;
+    margin: auto;
+    margin-top: -35px;
+    box-shadow: 0 4px 16px rgba(201, 168, 76, 0.45);
+    padding: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    transition: background var(--transition), box-shadow var(--transition);
+    border: 2px solid var(--border-dark);
+}
+
+.gt-mobile-nav__item--highlight .gt-mobile-nav__link:hover {
+    background: var(--brand-hover);
+    color: var(--text-white);
+    box-shadow: 0 6px 20px rgba(201, 168, 76, 0.6);
+}
+
+/* ── Cart Count Badge ────────────────────────────────────────────── */
+
+.gt-mobile-nav__badge {
+    position: absolute;
+    top: 4px;
+    right: calc(50% - 18px);
+    background: var(--danger);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 700;
+    line-height: 1;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: 99px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gt-mobile-nav__badge:empty,
+.gt-mobile-nav__badge[data-count="0"] {
+    display: none;
+}

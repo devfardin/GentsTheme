@@ -161,7 +161,7 @@ $gent_general = get_option('gent_general');
     </div>
 </footer>
 
-</div>
+<?php get_template_part('template-parts/mobile-nav'); ?>
 
 <?php wp_footer(); ?>
 </body>

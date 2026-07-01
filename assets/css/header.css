@@ -147,7 +147,6 @@
 .header-nav ul li.current-menu-item>a,
 .header-nav ul li.current-menu-ancestor>a {
     color: var(--brand-hover);
-    /* background: var(--bg-brand); */
     font-weight: 600;
 }
 
