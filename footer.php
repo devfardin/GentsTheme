@@ -66,11 +66,22 @@ $gent_general = get_option('gent_general');
                     <li><a href="<?php echo esc_url(home_url('/about-us')); ?>"><span
                                 class="gentstime-footer__link-line"></span>About Us</a></li>
                     <li><a href="<?php echo esc_url(home_url('/inventory')); ?>"><span
-                                class="gentstime-footer__link-line"></span>Inventory</a></li>
+                                class="gentstime-footer__link-line"></span>Contact Us</a></li>
                     <li><a href="<?php echo esc_url(home_url('/services')); ?>"><span
-                                class="gentstime-footer__link-line"></span>Services</a></li>
-                    <li><a href="<?php echo esc_url(home_url('/contact')); ?>"><span
-                                class="gentstime-footer__link-line"></span>Contact</a></li>
+                                class="gentstime-footer__link-line"></span>Shop</a></li>
+                </ul>
+            </div>
+
+            <!-- My Account & Payments -->
+            <div>
+                <h4 class="gentstime-footer__heading">Stay Updated</h4>
+                <ul class="gentstime-footer__links">
+                    <li><a href="<?php echo esc_url(home_url('/')); ?>"><span
+                                class="gentstime-footer__link-line"></span>Privacy Policy</a></li>
+                    <li><a href="<?php echo esc_url(home_url('/about-us')); ?>"><span
+                                class="gentstime-footer__link-line"></span>Terms and Conditions</a></li>
+                    <li><a href="<?php echo esc_url(home_url('/inventory')); ?>"><span
+                                class="gentstime-footer__link-line"></span>Refund and Return Policy</a></li>
                 </ul>
             </div>
 
@@ -133,15 +144,6 @@ $gent_general = get_option('gent_general');
                         <span>Mon–Sat: 9AM – 7PM</span>
                     </li>
                 </ul>
-            </div>
-
-            <!-- Newsletter -->
-            <div>
-                <h4 class="gentstime-footer__heading">Stay Updated</h4>
-                <p class="gentstime-footer__newsletter-text">GET SPECIAL DISCOUNTS IN YOUR INBOX</p>
-                <div class="gentstime-footer__newsletter-form">
-                    <?php echo do_shortcode('[fluentform id=3]'); ?>
-                </div>
             </div>
 
         </div>

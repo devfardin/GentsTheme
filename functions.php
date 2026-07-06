@@ -46,6 +46,36 @@ class GentsTimeFunctions
 
 new GentsTimeFunctions();
 
+// ══════════════════════════════════════════════════════════════════
+// Recently Viewed Products
+// ══════════════════════════════════════════════════════════════════
+
+/**
+ * Track product view via cookie (no login required).
+ */
+function gt_track_recently_viewed( $product_id ) {
+    $viewed = gt_get_recently_viewed();
+    $viewed = array_filter( $viewed, fn( $id ) => $id !== $product_id );
+    array_unshift( $viewed, $product_id );
+    $viewed = array_slice( $viewed, 0, 20 );
+    setcookie( 'gt_recently_viewed', implode( ',', $viewed ), time() + ( 30 * DAY_IN_SECONDS ), COOKIEPATH, COOKIE_DOMAIN, is_ssl(), false );
+}
+
+/**
+ * Get recently viewed product IDs from cookie.
+ */
+function gt_get_recently_viewed() {
+    if ( empty( $_COOKIE['gt_recently_viewed'] ) ) return [];
+    return array_map( 'absint', array_filter( explode( ',', sanitize_text_field( wp_unslash( $_COOKIE['gt_recently_viewed'] ) ) ) ) );
+}
+
+// Track on single product page load
+add_action( 'template_redirect', function () {
+    if ( is_product() ) {
+        gt_track_recently_viewed( get_queried_object_id() );
+    }
+} );
+
 // ── Single product: remove duplicate default hooks ──────────────────────────
 add_action('wp', function () {
     if (!is_product())
@@ -66,16 +96,19 @@ add_action('wp_print_styles', function () {
 }, 200);
 
 // Redirect cart page to checkout (merged page)
-add_action('template_redirect', function () {
-    if (is_cart()) {
-        wp_safe_redirect(wc_get_checkout_url(), 301);
-        exit;
-        if(is_checkout() || WC()->cart->empty_cart()){
-            wp_safe_redirect(get_permalink(home_url('/shop')), 301);
-            exit;
-        }
+add_action( 'template_redirect', function () {
+
+    if ( ! is_cart() ) {
+        return;
     }
-});
+    if ( WC()->cart && WC()->cart->is_empty() ) {
+        wp_safe_redirect( wc_get_page_permalink( 'shop' ) );
+        exit;
+    }
+    wp_safe_redirect( wc_get_checkout_url() );
+    exit;
+
+} );
 
 // AJAX: Shop filter + load more
 add_action('wp_ajax_shop_ajax_filter', 'gentstime_shop_ajax_filter');
@@ -85,12 +118,13 @@ function gentstime_shop_ajax_filter()
 {
     check_ajax_referer('shop_ajax_nonce', 'nonce');
 
-    $page = max(1, absint($_POST['page'] ?? 1));
-    $orderby = sanitize_key($_POST['orderby'] ?? 'menu_order');
-    $min_p = isset($_POST['min_price']) ? floatval($_POST['min_price']) : '';
-    $max_p = isset($_POST['max_price']) ? floatval($_POST['max_price']) : '';
-    $cat_slug = sanitize_text_field($_POST['cat'] ?? '');
-    $size = sanitize_text_field($_POST['size'] ?? '');
+    $page        = max(1, absint($_POST['page'] ?? 1));
+    $orderby     = sanitize_key($_POST['orderby'] ?? 'menu_order');
+    $min_p       = isset($_POST['min_price']) ? floatval($_POST['min_price']) : '';
+    $max_p       = isset($_POST['max_price']) ? floatval($_POST['max_price']) : '';
+    $cat_slug    = sanitize_text_field($_POST['cat'] ?? '');
+    $size        = sanitize_text_field($_POST['size'] ?? '');
+    $new_arrivals = ! empty($_POST['new_arrivals']) && '1' === $_POST['new_arrivals'];
 
     $tax_query = [];
     $meta_query = [];
@@ -124,13 +158,20 @@ function gentstime_shop_ajax_filter()
     $order_args = $order_map[$orderby] ?? $order_map['menu_order'];
 
     $args = array_merge([
-        'post_type' => 'product',
-        'post_status' => 'publish',
+        'post_type'      => 'product',
+        'post_status'    => 'publish',
         'posts_per_page' => 12,
-        'paged' => $page,
-        'tax_query' => $tax_query ?: [],
-        'meta_query' => $meta_query ?: [],
+        'paged'          => $page,
+        'tax_query'      => $tax_query ?: [],
+        'meta_query'     => $meta_query ?: [],
     ], $order_args);
+
+    if ($new_arrivals) {
+        $args['date_query'] = [[
+            'after'     => '30 days ago',
+            'inclusive' => true,
+        ]];
+    }
 
     $query = new WP_Query($args);
 

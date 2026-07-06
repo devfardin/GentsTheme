@@ -5,10 +5,10 @@
 (function () {
     'use strict';
 
-    const header   = document.querySelector('.site-header');
-    const toggle   = document.querySelector('.mobile-menu-toggle');
-    const panel    = document.getElementById('offcanvas-menu');
-    const overlay  = document.getElementById('offcanvas-overlay');
+    const header = document.querySelector('.site-header');
+    const toggle = document.querySelector('.mobile-menu-toggle');
+    const panel = document.getElementById('offcanvas-menu');
+    const overlay = document.getElementById('offcanvas-overlay');
     const closeBtn = document.querySelector('.offcanvas-close');
 
     /* ── Sticky scroll shadow ───────────────────────────────────── */
@@ -32,9 +32,9 @@
         document.body.style.overflow = '';
     }
 
-    if (toggle)   toggle.addEventListener('click', openPanel);
+    if (toggle) toggle.addEventListener('click', openPanel);
     if (closeBtn) closeBtn.addEventListener('click', closePanel);
-    if (overlay)  overlay.addEventListener('click', closePanel);
+    if (overlay) overlay.addEventListener('click', closePanel);
 
     /* Close on Escape key */
     document.addEventListener('keydown', function (e) {
@@ -51,10 +51,10 @@
     }
 
     /* ── Cart Sidebar ───────────────────────────────────────────── */
-    var cartToggle  = document.getElementById('cart-sidebar-toggle');
+    var cartToggle = document.getElementById('cart-sidebar-toggle');
     var cartSidebar = document.getElementById('cart-sidebar');
     var cartOverlay = document.getElementById('cart-sidebar-overlay');
-    var cartClose   = document.getElementById('cart-sidebar-close');
+    var cartClose = document.getElementById('cart-sidebar-close');
 
     function openCart() {
         cartSidebar.classList.add('is-open');
@@ -69,7 +69,7 @@
     }
 
     if (cartToggle) cartToggle.addEventListener('click', openCart);
-    if (cartClose)  cartClose.addEventListener('click', closeCart);
+    if (cartClose) cartClose.addEventListener('click', closeCart);
     if (cartOverlay) cartOverlay.addEventListener('click', closeCart);
 
     document.addEventListener('keydown', function (e) {
@@ -79,7 +79,7 @@
     });
 
     /* ── Cart fragment helpers ───────────────────────────────────────── */
-    var cartBody  = cartSidebar ? cartSidebar.querySelector('.cart-sidebar-body') : null;
+    var cartBody = cartSidebar ? cartSidebar.querySelector('.cart-sidebar-body') : null;
     var cartBadge = document.querySelector('.cart-badge');
     var cartFooter = cartSidebar ? cartSidebar.querySelector('.cart-sidebar-footer') : null;
 
@@ -116,24 +116,24 @@
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams({
                 action: 'gentstime_get_cart_fragments',
-                nonce:  headerAjax.cart_nonce
+                nonce: headerAjax.cart_nonce
             })
         })
-        .then(function (r) { return r.json(); })
-        .then(function (data) {
-            if (data.success) {
-                updateBadge(data.data.count);
-                updateSidebarHTML(data.data.mini_cart);
-                if (cartFooter) {
-                    cartFooter.style.display = data.data.count > 0 ? '' : 'none';
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                if (data.success) {
+                    updateBadge(data.data.count);
+                    updateSidebarHTML(data.data.mini_cart);
+                    if (cartFooter) {
+                        cartFooter.style.display = data.data.count > 0 ? '' : 'none';
+                    }
+                    markCartButtons(data.data.product_ids || []);
                 }
-                markCartButtons(data.data.product_ids || []);
-            }
-            if (typeof callback === 'function') callback();
-        })
-        .catch(function () {
-            if (typeof callback === 'function') callback();
-        });
+                if (typeof callback === 'function') callback();
+            })
+            .catch(function () {
+                if (typeof callback === 'function') callback();
+            });
     }
 
     /* ── Mark / unmark cards that are already in cart ──────────────── */
@@ -145,7 +145,12 @@
             var inCart = cartIds.indexOf(pid) !== -1;
             btn.classList.toggle('gt-in-cart', inCart);
             var label = btn.querySelector('.gt-atc-label');
-            if (label) label.textContent = inCart ? 'In Cart' : 'Add to Cart';
+            if (label) label.innerHTML = inCart ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5l-4-4 1.41-1.41L10 13.67l6.59-6.59L18 8.5l-8 8z"/></svg>` 
+            :
+             `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                        <path
+                            d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM5.21 4l-.94-2H1v2h2l3.6 7.59-1.35 2.44C5.16 14.36 5 14.96 5 15.5c0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63H19c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0023.25 3H5.21z" />
+                </svg>`;
         });
     }
 
@@ -174,27 +179,27 @@
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams({ product_id: pid, quantity: 1 })
         })
-        .then(function (r) { return r.json(); })
-        .then(function (data) {
-            btn.classList.remove('gt-loading');
-            if (data.error) {
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                btn.classList.remove('gt-loading');
+                if (data.error) {
+                    if (label) label.textContent = 'Add to Cart';
+                    window.location = btn.href; /* fallback: redirect */
+                    return;
+                }
+                /* Success */
+                var card = btn.closest('.gt-product-card');
+                var name = card ? (card.querySelector('.gt-card-title') || {}).textContent || '' : '';
+                fetchCartFragments();
+                showToast(name.trim());
+                /* Suppress WC's injected "View cart" link next to button */
+                var viewLink = btn.parentNode.querySelector('.added_to_cart');
+                if (viewLink) viewLink.remove();
+            })
+            .catch(function () {
+                btn.classList.remove('gt-loading');
                 if (label) label.textContent = 'Add to Cart';
-                window.location = btn.href; /* fallback: redirect */
-                return;
-            }
-            /* Success */
-            var card = btn.closest('.gt-product-card');
-            var name = card ? (card.querySelector('.gt-card-title') || {}).textContent || '' : '';
-            fetchCartFragments();
-            showToast(name.trim());
-            /* Suppress WC's injected "View cart" link next to button */
-            var viewLink = btn.parentNode.querySelector('.added_to_cart');
-            if (viewLink) viewLink.remove();
-        })
-        .catch(function () {
-            btn.classList.remove('gt-loading');
-            if (label) label.textContent = 'Add to Cart';
-        });
+            });
     });
 
     /* ── Buy Now (add to cart then redirect to checkout) ───────── */
@@ -202,8 +207,8 @@
         var btn = e.target.closest('.gt-buy-btn');
         if (!btn) return;
         e.preventDefault();
-        var pid          = btn.dataset.product_id;
-        var checkoutUrl  = btn.dataset.checkout_url;
+        var pid = btn.dataset.product_id;
+        var checkoutUrl = btn.dataset.checkout_url;
         if (!pid) return;
 
         btn.classList.add('gt-loading');
@@ -215,19 +220,19 @@
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams({ product_id: pid, quantity: 1 })
         })
-        .then(function (r) { return r.json(); })
-        .then(function (data) {
-            if (data.error) {
-                btn.classList.remove('gt-loading');
-                if (span) span.textContent = 'Buy Now';
-                window.location = btn.href;
-            } else {
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                if (data.error) {
+                    btn.classList.remove('gt-loading');
+                    if (span) span.textContent = 'Buy Now';
+                    window.location = btn.href;
+                } else {
+                    window.location = checkoutUrl;
+                }
+            })
+            .catch(function () {
                 window.location = checkoutUrl;
-            }
-        })
-        .catch(function () {
-            window.location = checkoutUrl;
-        });
+            });
     });
 
     /* Suppress WC's auto-inserted "View cart" anchor after any AJAX add */
@@ -256,22 +261,22 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: new URLSearchParams({
-                        action:        'gentstime_remove_cart_item',
-                        nonce:         headerAjax.cart_nonce,
+                        action: 'gentstime_remove_cart_item',
+                        nonce: headerAjax.cart_nonce,
                         cart_item_key: key
                     })
                 })
-                .then(function (r) { return r.json(); })
-                .then(function (data) {
-                    if (data.success) {
-                        updateBadge(data.data.count);
-                        updateSidebarHTML(data.data.mini_cart);
-                        if (cartFooter) {
-                            cartFooter.style.display = data.data.count > 0 ? '' : 'none';
+                    .then(function (r) { return r.json(); })
+                    .then(function (data) {
+                        if (data.success) {
+                            updateBadge(data.data.count);
+                            updateSidebarHTML(data.data.mini_cart);
+                            if (cartFooter) {
+                                cartFooter.style.display = data.data.count > 0 ? '' : 'none';
+                            }
+                            markCartButtons(data.data.product_ids || []);
                         }
-                        markCartButtons(data.data.product_ids || []);
-                    }
-                });
+                    });
             });
         });
     }
@@ -290,11 +295,11 @@
             toastEl.className = 'gt-cart-toast';
             toastEl.innerHTML =
                 '<span class="gt-toast-icon">' +
-                    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>' +
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>' +
                 '</span>' +
                 '<div class="gt-toast-text">' +
-                    '<strong class="gt-toast-title">Added to cart!</strong>' +
-                    '<span class="gt-toast-name"></span>' +
+                '<strong class="gt-toast-title">Added to cart!</strong>' +
+                '<span class="gt-toast-name"></span>' +
                 '</div>' +
                 '<button class="gt-toast-view" type="button">View Cart</button>';
 
@@ -323,6 +328,12 @@
         clearTimeout(toastTimer);
     }
 
+    /* Expose for use by other scripts (e.g. variable product popup) */
+    window.gtCart = {
+        fetchFragments: fetchCartFragments,
+        showToast:      showToast,
+        openCart:       openCart,
+    };
     /* ── WooCommerce added_to_cart (fired by WC's own JS or our fetch) ── */
     jQuery(document.body).on('added_to_cart', function (e, fragments, cart_hash, $btn) {
         /* suppress WC's view-cart link injection */
@@ -333,11 +344,11 @@
     /* Works for both: desktop input and off-canvas input */
     var searchPairs = [
         {
-            input:   document.querySelector('.header-search .search-input'),
+            input: document.querySelector('.header-search .search-input'),
             results: document.querySelector('.header-search .search-results')
         },
         {
-            input:   document.querySelector('.offcanvas-search-input'),
+            input: document.querySelector('.offcanvas-search-input'),
             results: document.querySelector('.offcanvas-search-results')
         }
     ];
@@ -380,15 +391,15 @@
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams({
                 action: 'gentstime_product_search',
-                nonce:  headerAjax.nonce,
-                query:  query
+                nonce: headerAjax.nonce,
+                query: query
             })
         })
-        .then(function (r) { return r.json(); })
-        .then(function (data) { renderResults(data, resultsEl); })
-        .catch(function () {
-            resultsEl.innerHTML = '<div class="search-no-results">Something went wrong.</div>';
-        });
+            .then(function (r) { return r.json(); })
+            .then(function (data) { renderResults(data, resultsEl); })
+            .catch(function () {
+                resultsEl.innerHTML = '<div class="search-no-results">Something went wrong.</div>';
+            });
     }
 
     /* Escape a string for safe use inside HTML text / attribute values */
@@ -412,23 +423,23 @@
         var fragment = document.createDocumentFragment();
 
         data.data.forEach(function (p) {
-            var a   = document.createElement('a');
+            var a = document.createElement('a');
             var img = document.createElement('img');
             var info = document.createElement('div');
-            var nameEl  = document.createElement('div');
+            var nameEl = document.createElement('div');
             var priceEl = document.createElement('div');
 
             /* Safe URL — only allow http/https */
             var safeUrl = /^https?:\/\//.test(p.url) ? p.url : '#';
-            a.href      = safeUrl;
+            a.href = safeUrl;
             a.className = 'search-result-item';
 
-            img.src       = escAttr(p.image);
-            img.alt       = escAttr(p.name);
+            img.src = escAttr(p.image);
+            img.alt = escAttr(p.name);
             img.className = 'search-result-image';
 
-            info.className  = 'search-result-info';
-            nameEl.className  = 'search-result-name';
+            info.className = 'search-result-info';
+            nameEl.className = 'search-result-name';
             nameEl.textContent = p.name;  /* textContent — no XSS possible */
 
             /* price comes as WC HTML (e.g. <span class="woocommerce-Price-amount">)

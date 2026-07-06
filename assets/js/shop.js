@@ -1,5 +1,38 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const cfg      = window.gtShopData;
+
+    /* ── Mobile sidebar (always runs, no dependency on gtShopData) ── */
+    const sidebar = document.getElementById('gt-shop-sidebar');
+    const toggle  = document.getElementById('gt-filter-toggle');
+
+    if (toggle && sidebar) {
+        const closeBtn = document.getElementById('gt-sidebar-close-btn');
+
+        function openSidebar() {
+            sidebar.classList.add('is-open');
+            toggle.setAttribute('aria-expanded', 'true');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            sidebar.classList.remove('is-open');
+            toggle.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+        }
+
+        toggle.addEventListener('click', openSidebar);
+        if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+
+        document.addEventListener('click', (e) => {
+            if (sidebar.classList.contains('is-open') && !sidebar.contains(e.target) && !toggle.contains(e.target)) {
+                closeSidebar();
+            }
+        });
+    }
+
+    /* ── Everything below needs gtShopData ─────────────────────── */
+    const cfg = window.gtShopData;
+    if (!cfg) return;
+
     const grid     = document.getElementById('gt-shop-grid');
     const loadWrap = document.getElementById('gt-load-more-wrap');
     const loadBtn  = document.getElementById('gt-load-more');
@@ -57,9 +90,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const fill     = document.getElementById('gt-price-fill');
 
     function updateFill() {
+        if (!minRange || !maxRange || !fill || !minVal || !maxVal) return;
         const mn  = parseInt(minRange.value);
         const mx  = parseInt(maxRange.value);
-        const rng = cfg.priceMax - cfg.priceMin;
+        const rng = cfg.priceMax - cfg.priceMin || 1;
         fill.style.left  = ((mn - cfg.priceMin) / rng * 100) + '%';
         fill.style.right = ((cfg.priceMax - mx) / rng * 100) + '%';
         minVal.textContent = mn;
@@ -117,23 +151,6 @@ document.addEventListener('DOMContentLoaded', () => {
         doFetch();
     });
 
-    /* ── Mobile sidebar ─────────────────────────────────────────── */
-    const sidebar = document.getElementById('gt-shop-sidebar');
-    const overlay = document.getElementById('gt-sidebar-overlay');
-    const toggle  = document.getElementById('gt-filter-toggle');
-
-    toggle?.addEventListener('click', () => {
-        const open = sidebar.classList.toggle('is-open');
-        overlay.classList.toggle('is-open', open);
-        toggle.setAttribute('aria-expanded', open);
-    });
-
-    overlay?.addEventListener('click', () => {
-        sidebar.classList.remove('is-open');
-        overlay.classList.remove('is-open');
-        toggle?.setAttribute('aria-expanded', 'false');
-    });
-
     /* ── Fetch ──────────────────────────────────────────────────── */
     function resetAndFetch() {
         state.page   = 1;
@@ -153,14 +170,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const body = new FormData();
-        body.append('action',    'shop_ajax_filter');
-        body.append('nonce',     cfg.nonce);
-        body.append('page',      state.page);
-        body.append('orderby',   state.orderby);
-        body.append('cat',       state.cat);
-        body.append('size',      state.size);
-        body.append('min_price', state.min_price);
-        body.append('max_price', state.max_price);
+        body.append('action',       'shop_ajax_filter');
+        body.append('nonce',        cfg.nonce);
+        body.append('page',         state.page);
+        body.append('orderby',      state.orderby);
+        body.append('cat',          state.cat);
+        body.append('size',         state.size);
+        body.append('min_price',    state.min_price);
+        body.append('max_price',    state.max_price);
+        body.append('new_arrivals', cfg.newArrivals || 0);
 
         fetch(cfg.ajaxurl, { method: 'POST', body })
             .then(r => r.json())

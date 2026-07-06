@@ -294,7 +294,7 @@ $checkout = WC()->checkout();
 
 
                             <!-- ─── Payment Method ─── -->
-                            <div class="gt-card">
+                            <div class="gt-card" id="gt-payment-card">
                                 <h2 class="gt-card-heading">Payment Method</h2>
 
                                 <?php
@@ -303,31 +303,36 @@ $checkout = WC()->checkout();
                                 if (!$chosen_gateway && !empty($available_gateways)) {
                                     $chosen_gateway = array_key_first($available_gateways);
                                 }
-
                                 ?>
 
-                                
+                                <ul class="gt-payment-methods wc_payment_methods payment_methods methods">
+                                    <?php foreach ($available_gateways as $gateway_id => $gateway):
+                                        $is_chosen = ($gateway_id === $chosen_gateway);
+                                    ?>
+                                        <li class="gt-payment-option wc_payment_method payment_method_<?php echo esc_attr($gateway_id); ?>">
 
-                                <div class="gt-payment-methods">
-                                    <?php foreach ($available_gateways as $gateway_id => $gateway): ?>
-                                        <label class="gt-payment-option">
                                             <input type="radio"
+                                                id="payment_method_<?php echo esc_attr($gateway_id); ?>"
                                                 name="payment_method"
                                                 value="<?php echo esc_attr($gateway_id); ?>"
-                                                class="gt-payment-radio"
-                                                <?php checked($gateway_id, $chosen_gateway); ?>>
-                                            <span class="gt-payment-label">
-                                                <?php if ($gateway->get_icon()): ?>
-                                                    <span class="gt-payment-icon"><?php echo $gateway->get_icon(); ?></span>
-                                                <?php endif; ?>
+                                                class="input-radio"
+                                                <?php checked($is_chosen, true); ?>
+                                                data-order_button_text="<?php echo esc_attr($gateway->order_button_text); ?>">
+
+                                            <label for="payment_method_<?php echo esc_attr($gateway_id); ?>" class="gt-payment-label">
+                                                <?php echo $gateway->get_icon(); ?>
                                                 <?php echo esc_html($gateway->get_title()); ?>
-                                                <?php if ($gateway->get_description()): ?>
-                                                    <small class="gt-payment-desc"><?php echo wp_kses_post($gateway->get_description()); ?></small>
-                                                <?php endif; ?>
-                                            </span>
-                                        </label>
+                                            </label>
+
+                                            <?php if ($gateway->has_fields() || $gateway->get_description()): ?>
+                                                <div class="payment_box payment_method_<?php echo esc_attr($gateway_id); ?>"<?php echo $is_chosen ? '' : ' style="display:none"'; ?>>
+                                                    <?php $gateway->payment_fields(); ?>
+                                                </div>
+                                            <?php endif; ?>
+
+                                        </li>
                                     <?php endforeach; ?>
-                                </div>
+                                </ul>
 
                                 <?php do_action('woocommerce_review_order_before_submit'); ?>
 

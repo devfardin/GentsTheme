@@ -1,0 +1,170 @@
+/* ════════════════════════════════════════
+   CTA Section — GentsTime
+════════════════════════════════════════ */
+
+.cta-section {
+    padding: 60px 0;
+    background: var(--bg-brand);
+}
+
+
+/* ════════════════════════════════════════
+   Trust Strip
+════════════════════════════════════════ */
+.cta-trust {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--border-light);
+    background: var(--bg-card);
+    box-shadow: var(--shadow-sm);
+}
+
+.cta-trust__item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 28px 24px;
+    border-right: 1px solid var(--border-light);
+    transition: background 0.3s ease;
+    cursor: default;
+    position: relative;
+}
+
+.cta-trust__item::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--brand);
+    transition: width 0.4s ease;
+}
+
+.cta-trust__item:hover::before {
+    width: 100%;
+}
+
+.cta-trust__item:last-child {
+    border-right: none;
+}
+
+.cta-trust__item:hover {
+    background: var(--bg-brand);
+}
+
+/* Icon */
+.cta-trust__icon {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-section);
+    color: var(--brand);
+    border: 1px solid var(--border);
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.cta-trust__item:hover .cta-trust__icon {
+    background: var(--brand);
+    color: #fff;
+    border-color: var(--brand);
+}
+
+/* Text */
+.cta-trust__text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cta-trust__text strong {
+    font-family: var(--font-ui);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+.cta-trust__text span {
+    font-family: var(--font-ui);
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.2;
+}
+
+@media only screen and (min-width: 768px){
+    .cta-trust__text strong {
+    font-family: var(--font-ui);
+    font-size: 16px;
+    }
+    .cta-trust__text span{
+        font-size: 14px;
+    }
+}
+
+.cta-trust__divider { display: none; }
+
+/* ── Responsive ── */
+@media (max-width: 992px) {
+    .cta-card {
+        min-height: 360px;
+    }
+}
+
+@media (max-width: 768px) {
+    .cta-header__title {
+        font-size: 26px;
+    }
+
+    .cta-inner {
+        grid-template-columns: 1fr;
+    }
+
+    .cta-card {
+        min-height: 300px;
+        padding: 32px 28px;
+    }
+
+    .cta-card__top {
+        left: 28px;
+        right: 28px;
+    }
+
+    .cta-card__title {
+        font-size: 26px;
+    }
+
+    .cta-trust {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .cta-trust__item:nth-child(1),
+    .cta-trust__item:nth-child(2) {
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    .cta-trust__item:nth-child(2) {
+        border-right: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .cta-trust {
+        grid-template-columns: 1fr;
+    }
+
+    .cta-trust__item {
+        border-right: none;
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    .cta-trust__item:last-child {
+        border-bottom: none;
+    }
+}

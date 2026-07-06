@@ -13,7 +13,6 @@ body {
     font-size: 16px;
     line-height: 1.6;
     color: #1a1a1a;
-    background-color: var(--bg-body);
     font-family: "Manrope", sans-serif !important;
     font-optical-sizing: auto;
     font-style: normal;
@@ -141,18 +140,23 @@ a {
 .btn-primary {
     display: inline-block;
     font-family: var(--font-ui);
-    font-size: .90rem;
+    font-size: .80rem;
     font-weight: 600;
     letter-spacing: 2px;
     background: var(--brand);
     color: var(--text-white);
     border: 2px solid var(--brand);
-    padding: 14px 40px;
+    padding: 12px 30px;
     cursor: pointer;
     transition: var(--transition);
     text-align: center;
     border-radius: var(--radius-sm);
-    width: 100%;
+}
+@media only screen and (min-width: 768px){
+    .btn-primary {
+        padding: 11px 35px;
+        font-size: .90rem;
+    }
 }
 
 .btn-primary:hover {
@@ -181,7 +185,7 @@ section {
     font-weight: 500;
     color: var(--text-primary);
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 @media only screen and (min-width:768px) {

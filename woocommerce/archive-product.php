@@ -149,16 +149,5 @@ $active_cat  = $current_term ? $current_term->slug : '';
 </div>
 
 <!-- Sidebar overlay (mobile) -->
-<div class="gt-sidebar-overlay" id="gt-sidebar-overlay"></div>
-
-<script>
-window.gtShopData = {
-    ajaxurl: '<?php echo esc_js( admin_url( "admin-ajax.php" ) ); ?>',
-    nonce:   '<?php echo esc_js( wp_create_nonce( "shop_ajax_nonce" ) ); ?>',
-    initCat: '<?php echo esc_js( $active_cat ); ?>',
-    priceMin: <?php echo (int) $price_min; ?>,
-    priceMax: <?php echo (int) $price_max; ?>,
-};
-</script>
 
 <?php get_footer(); ?>

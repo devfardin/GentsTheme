@@ -29,5 +29,8 @@ if (!defined('ABSPATH')) {
             endif;
             ?>
         </div>
+        <div style="display:flex; justify-content: center;">
+            <a href="<?php echo get_permalink( wc_get_page_id( 'shop' ) ); ?>" class="btn btn-primary"> View All Products </a>
+        </div>
     </div>
 </section>

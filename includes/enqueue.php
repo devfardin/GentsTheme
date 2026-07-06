@@ -84,6 +84,47 @@ class GentsTimeAssets
             GENTSTIME_VERSION,
             'all'
         );
+        wp_enqueue_style(
+            'gentstime-extend',
+            get_stylesheet_directory_uri() . '/assets/css/extend.css',
+            [],
+            GENTSTIME_VERSION,
+            'all'
+        );
+        wp_enqueue_style(
+            'content-product',
+            get_stylesheet_directory_uri() . '/assets/css/content-procuct.css',
+            [],
+            GENTSTIME_VERSION,
+            'all'
+        );
+        wp_enqueue_style(
+            'gentstime-cta',
+            get_stylesheet_directory_uri() . '/assets/css/cta.css',
+            [],
+            GENTSTIME_VERSION,
+            'all'
+        );
+
+        if ( is_page_template( 'page-recently-viewed.php' ) ) {
+            wp_enqueue_style(
+                'gentstime-recently-viewed',
+                get_stylesheet_directory_uri() . '/assets/css/recently-viewed.css',
+                [],
+                GENTSTIME_VERSION,
+                'all'
+            );
+        }
+
+        if (is_page('about-us') || is_page('about')) {
+            wp_enqueue_style(
+                'gentstime-about',
+                get_stylesheet_directory_uri() . '/assets/css/about.css',
+                [],
+                GENTSTIME_VERSION,
+                'all'
+            );
+        }
 
         if (is_checkout() || is_cart()) {
             wp_enqueue_style(
@@ -120,7 +161,17 @@ class GentsTimeAssets
             'cart_ids' => function_exists('WC') ? GentsTimeHeader::get_cart_product_ids() : [],
         ]);
 
-        if (is_shop() || is_product_category() || is_product_tag()) {
+        if ( is_product() ) {
+            wp_enqueue_script(
+                'gentstime-single-product',
+                get_stylesheet_directory_uri() . '/assets/js/single-product.js',
+                [],
+                GENTSTIME_VERSION,
+                true
+            );
+        }
+
+        if (is_shop() || is_product_category() || is_product_tag() || is_page('new-arrivals')) {
             wp_enqueue_script(
                 'gentstime-shop',
                 get_stylesheet_directory_uri() . '/assets/js/shop.js',
@@ -128,10 +179,31 @@ class GentsTimeAssets
                 GENTSTIME_VERSION,
                 true
             );
-            wp_localize_script('gentstime-shop', 'shopAjax', [
-                'ajaxurl' => admin_url('admin-ajax.php'),
-                'nonce' => wp_create_nonce('shop_ajax_nonce'),
+
+            global $wpdb;
+            $price_row = $wpdb->get_row("SELECT MIN(CAST(meta_value AS DECIMAL(10,2))) as mn, MAX(CAST(meta_value AS DECIMAL(10,2))) as mx FROM {$wpdb->postmeta} WHERE meta_key = '_price' AND meta_value != ''");
+            $price_min = $price_row ? (int) floor((float) $price_row->mn) : 0;
+            $price_max = $price_row ? (int) ceil((float) $price_row->mx)  : 10000;
+
+            $current_term = is_tax() ? get_queried_object() : null;
+            wp_localize_script('gentstime-shop', 'gtShopData', [
+                'ajaxurl'     => admin_url('admin-ajax.php'),
+                'nonce'       => wp_create_nonce('shop_ajax_nonce'),
+                'initCat'     => $current_term ? $current_term->slug : '',
+                'priceMin'    => $price_min,
+                'priceMax'    => $price_max,
+                'newArrivals' => is_page('new-arrivals') ? 1 : 0,
             ]);
+        }
+
+        if ( is_product() ) {
+            wp_enqueue_script(
+                'gentstime-single-product',
+                get_stylesheet_directory_uri() . '/assets/js/single-product.js',
+                [ 'jquery' ],
+                GENTSTIME_VERSION,
+                true
+            );
         }
 
         if (is_checkout() || is_cart()) {
