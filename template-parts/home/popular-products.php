@@ -6,7 +6,13 @@ if (!defined('ABSPATH')) {
 
 <section class="gt-popular-products">
     <div class="container">
-        <h2 class="section_title"> Popular Products </h2>
+        <!-- section title -->
+            <div class="gt-section-title__wrap">
+                <h2 class="section_title"> Trendy Product </h2>
+                <a class="section_btn" href="<?php echo esc_url(wc_get_page_permalink('shop')); ?>"> 
+                    View All Products
+                </a>
+            </div>
         <div class="products_wrapper woocommerce">
             <?php
             $args = [

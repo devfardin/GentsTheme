@@ -106,7 +106,23 @@ class GentsTimeAssets
             'all'
         );
 
-        if ( is_page_template( 'page-recently-viewed.php' ) ) {
+            // Swiper CDN
+            wp_enqueue_style(
+                'swiper-CDN',
+                '//cdn.jsdelivr.net/npm/swiper@14.0.1/swiper-bundle.min.css',
+                [],
+                GENTSTIME_VERSION,
+                'all'
+            );
+             // Swiper CDN
+            wp_enqueue_style(
+                'swiper-main',
+                get_stylesheet_directory_uri() . '/assets/css/swiper.css',
+                [],
+                GENTSTIME_VERSION,
+                'all'
+            );
+
             wp_enqueue_style(
                 'gentstime-recently-viewed',
                 get_stylesheet_directory_uri() . '/assets/css/recently-viewed.css',
@@ -114,7 +130,7 @@ class GentsTimeAssets
                 GENTSTIME_VERSION,
                 'all'
             );
-        }
+     
 
         if (is_page('about-us') || is_page('about')) {
             wp_enqueue_style(
@@ -139,6 +155,23 @@ class GentsTimeAssets
 
     public function enqueue_scripts()
     {
+        // swiper js
+        
+        wp_enqueue_script(
+            'swiper-cdn',
+            '//cdn.jsdelivr.net/npm/swiper@14.0.1/swiper-bundle.min.js',
+            [],
+            GENTSTIME_VERSION,
+            true
+        );
+         wp_enqueue_script(
+            'swiper-main',
+            get_stylesheet_directory_uri() . '/assets/js/swiper.js',
+            ['swiper-cdn'],
+            GENTSTIME_VERSION,
+            true
+        );
+        
         wp_enqueue_script(
             'gentstime-main',
             get_stylesheet_directory_uri() . '/assets/js/main.js',

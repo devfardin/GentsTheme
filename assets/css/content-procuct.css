@@ -384,7 +384,7 @@ li.gt-product-card>.price {
     }
 }
 
-@media (max-width: 380px) {
+@media (max-width: 368px) {
 
     .woocommerce ul.products,
     .woocommerce-page ul.products {

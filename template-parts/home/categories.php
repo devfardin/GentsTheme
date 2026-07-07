@@ -12,7 +12,13 @@ $categories = get_terms(
     ?>
 <section class="gt-categories">
     <div class="container">
-        <h2 class="section_title"> Product Categories </h2>
+        <!-- section title -->
+            <div class="gt-section-title__wrap">
+                <h2 class="section_title"> Categories </h2>
+                <a class="section_btn" href="<?php echo esc_url(wc_get_page_permalink('shop')); ?>"> 
+                    View Categories
+                </a>
+            </div>
         <div class="gt-categories__grid">
             <?php foreach ($categories as $category): ?>
                 <div class="category">
