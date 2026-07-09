@@ -142,6 +142,16 @@ class GentsTimeAssets
             );
         }
 
+        if (is_page('privacy-policy') || is_page('refund-and-return-policy') || is_page('terms-and-conditions')) {
+            wp_enqueue_style(
+                'gentstime-privacy-policy',
+                get_stylesheet_directory_uri() . '/assets/css/privacy-policy.css',
+                [],
+                GENTSTIME_VERSION,
+                'all'
+            );
+        }
+
         if (is_checkout() || is_cart()) {
             wp_enqueue_style(
                 'gentstime-checkout',
@@ -163,7 +173,17 @@ class GentsTimeAssets
             [],
             GENTSTIME_VERSION,
             true
+        ); 
+        
+        // Hero Slider script
+        wp_enqueue_script(
+            'hero-slider',
+            get_stylesheet_directory_uri() . '/assets/js/hero-slider.js',
+            [],
+            GENTSTIME_VERSION,
+            true
         );
+
          wp_enqueue_script(
             'swiper-main',
             get_stylesheet_directory_uri() . '/assets/js/swiper.js',

@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     subtotalCell.innerHTML = data.data.item_subtotal;
                 }
                 updateSummary(data);
-                showToast('Cart updated.', 'success');
+                showToast('Item updated successfully.', 'success');
             } else {
                 showToast(data.data.message || 'Could not update cart.', 'error');
             }

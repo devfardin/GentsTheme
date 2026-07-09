@@ -27,13 +27,17 @@ get_header();
                 get_template_part('template-parts/pages/new-arrivals');
             } else if (is_page('contact')) {
                 get_template_part('template-parts/pages/contact');
+            }else if (is_page('privacy-policy')) {
+                get_template_part('template-parts/pages/privacy-policy');
+            }else if (is_page('terms-and-conditions')) {
+                get_template_part('template-parts/pages/terms-and-conditions');
+            }else if (is_page('refund-and-return-policy')) {
+                get_template_part('template-parts/pages/refund-and-return-policy');
             } else {
-
                ?>
                <div class="container">
                    <?php the_content(); ?>
                </div>
-
                <?php 
             }
             ?>

@@ -1,0 +1,333 @@
+/* =============================================
+   Privacy Policy / Terms & Conditions / Refund & Return Policy
+   Shared Page Styles
+   ============================================= */
+
+.pp-section,
+.tc-section,
+.rr-section {
+    padding: 0px 0 40px;
+}
+
+.pp-layout,
+.tc-layout,
+.rr-layout {
+    display: grid;
+    gap: 20px;
+    align-items: start;
+}
+
+@media (min-width: 768px) {
+    .pp-layout,
+    .tc-layout,
+    .rr-layout {
+        grid-template-columns: 270px 1fr;
+        gap: 30px;
+    }
+}
+
+/* ── TOC Sidebar ─────────────────────────────── */
+.pp-toc {
+    background: var(--bg-section);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    position: sticky;
+    top: 100px;
+    display: none;
+}
+@media only screen and (min-width:768px){
+    .pp-toc{
+        display: block;
+    }
+}
+
+.pp-toc__label {
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--brand);
+    margin-bottom: 14px;
+}
+
+.pp-toc ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.pp-toc ul li a {
+    display: block;
+    font-size: 17px;
+    color: var(--text-secondary);
+    padding: 6px 7px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: var(--transition);
+    line-height: 1.5;
+}
+
+.pp-toc ul li a:hover {
+    background: var(--bg-brand);
+    color: var(--brand);
+}
+
+/* ── Intro ───────────────────────────────────── */
+.pp-intro {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.pp-intro .about-text { margin-bottom: 0; }
+
+/* ── Policy Block ────────────────────────────── */
+.pp-block {
+    display: flex;
+    gap: 15px;
+    padding: 25px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+    background: #fff;
+    transition: var(--transition);
+    scroll-margin-top: 100px;
+}
+.pp-block:last-child{
+    margin-bottom: 0;
+}
+
+.pp-block:hover {
+    border-color: var(--brand);
+    box-shadow: var(--shadow-md);
+}
+
+.pp-block__icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    background: var(--bg-brand);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--brand);
+}
+
+.pp-block__icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.pp-block__body {
+    flex: 1;
+    min-width: 0;
+}
+
+.pp-block__title {
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.pp-block__title span {
+    font-family: var(--font-ui);
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-left: 6px;
+}
+
+.pp-block__body p {
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    margin-bottom: 12px;
+}
+
+.pp-block__body p:last-child { margin-bottom: 0; }
+
+/* ── List ────────────────────────────────────── */
+.pp-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.pp-list li {
+    font-size: 17px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    padding-left: 18px;
+    position: relative;
+}
+
+.pp-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--brand);
+    flex-shrink: 0;
+}
+.pp-list li strong {
+  font-weight: 600;
+}
+
+/* ── Contact Block ───────────────────────────── */
+.pp-block--contact {
+    display: block;
+    background: var(--bg-brand);
+    border-color: transparent;
+}
+
+.pp-contact-grid {
+    display: grid;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+@media (min-width: 600px) {
+    .pp-contact-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.pp-contact-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.pp-contact-item:hover {
+    border-color: var(--brand);
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px);
+}
+
+.pp-contact-item svg {
+    width: 20px;
+    height: 20px;
+    color: var(--brand);
+    flex-shrink: 0;
+}
+
+.pp-contact-item__label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: var(--text-primary);
+    margin-bottom: 1px;
+}
+
+.pp-contact-item__value {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+/* ── Mobile ──────────────────────────────────── */
+@media (max-width: 599px) {
+    .pp-block {
+        
+        gap: 14px;
+        padding: 20px;
+    }
+
+
+
+    .pp-toc ul {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+}
+
+/* ── Inline link inside block body ──────────── */
+.tc-link {
+    color: var(--brand);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color var(--transition);
+}
+
+.tc-link:hover {
+    color: var(--brand-hover);
+}
+
+/* ── Notice Banner ───────────────────────────── */
+.tc-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: var(--bg-brand);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--brand);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-top: 8px;
+}
+
+.tc-notice svg {
+    width: 20px;
+    height: 20px;
+    color: var(--brand);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.tc-notice p {
+    font-size: 17px;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin: 0;
+}
+
+
+@media (max-width: 599px) {
+    .tc-notice {
+        flex-direction: column;
+        gap: 10px;
+        padding: 16px;
+    }
+}
+
+/* ── Warning / Discounted block variant ─────── */
+.rr-block--warning {
+    background: #fffbf0;
+    border-color: var(--warning);
+}
+
+.rr-block--warning .pp-block__icon {
+    background: #fff3cd;
+    color: var(--warning);
+}
+
+.rr-block--warning .pp-block__title {
+    color: #7a5200;
+}
+
+.rr-block--warning:hover {
+    border-color: var(--warning);
+    box-shadow: 0 4px 20px rgba(230, 167, 0, .12);
+}

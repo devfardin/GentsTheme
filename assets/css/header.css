@@ -172,7 +172,7 @@
     padding: 18px 15px !important;
     background: var(--bg-section);
     border: 1.5px solid var(--border);
-    border-radius: 23px;
+    border-radius: var(--radius-sm);
     font-size: 14px;
     color: var(--text-primary);
     outline: none;
