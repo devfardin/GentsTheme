@@ -25,17 +25,28 @@ document.addEventListener('DOMContentLoaded', function () {
     /* Floating toast notification */
     function showToast(msg, type) {
         var existing = document.getElementById('gt-toast');
-        if (existing) existing.remove();
+        if (existing) {
+            existing.classList.remove('gt-toast-show');
+            existing.remove();
+        }
+        var svgIcons = {
+            success: '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 13 9 18 20 7"/></svg>',
+            error:   '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+            info:    '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="17" r="0.5" fill="#fff"/></svg>'
+        };
+        var t = type || 'info';
         var toast = document.createElement('div');
         toast.id        = 'gt-toast';
-        toast.className = 'gt-toast gt-toast-' + (type || 'info');
-        toast.innerHTML = msg;
+        toast.className = 'gt-toast gt-toast-' + t;
+        toast.innerHTML =
+            '<span class="gt-toast-icon">' + (svgIcons[t] || svgIcons.info) + '</span>' +
+            '<span class="gt-toast-msg">' + msg + '</span>';
         document.body.appendChild(toast);
         setTimeout(function () { toast.classList.add('gt-toast-show'); }, 10);
         setTimeout(function () {
             toast.classList.remove('gt-toast-show');
-            setTimeout(function () { toast.remove(); }, 400);
-        }, 3500);
+            setTimeout(function () { if (toast.parentNode) toast.remove(); }, 400);
+        }, 4500);
     }
 
     /* Show server-side WC notices (validation errors etc.) as toasts on page load */
@@ -452,8 +463,73 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     var checkoutForm = document.querySelector('.gt-checkout-form');
+    var placeOrderBtn = document.getElementById('place_order');
+    var termsCheckboxEl = document.getElementById('gt_terms_agree');
+    var termsWrapEl     = document.getElementById('gt-terms-agree-wrap');
+
+    function isTermsChecked() {
+        return termsCheckboxEl && termsCheckboxEl.checked;
+    }
+
+    function syncPlaceOrderBtn() {
+        if (!placeOrderBtn) return;
+        if (isTermsChecked()) {
+            placeOrderBtn.classList.remove('gt-btn-locked');
+            placeOrderBtn.removeAttribute('disabled');
+        } else {
+            placeOrderBtn.classList.add('gt-btn-locked');
+            placeOrderBtn.removeAttribute('disabled'); /* keep clickable for toast */
+        }
+    }
+
+    function shakeBtn() {
+        if (!placeOrderBtn) return;
+        placeOrderBtn.classList.remove('gt-btn-shake');
+        void placeOrderBtn.offsetWidth; /* reflow to restart animation */
+        placeOrderBtn.classList.add('gt-btn-shake');
+        placeOrderBtn.addEventListener('animationend', function () {
+            placeOrderBtn.classList.remove('gt-btn-shake');
+        }, { once: true });
+    }
+
+    if (termsCheckboxEl) {
+        syncPlaceOrderBtn();
+        termsCheckboxEl.addEventListener('change', function () {
+            syncPlaceOrderBtn();
+            if (this.checked && termsWrapEl) termsWrapEl.classList.remove('gt-terms-error');
+        });
+    }
+
+    /* Intercept button click before form submit */
+    if (placeOrderBtn) {
+        placeOrderBtn.addEventListener('click', function (e) {
+            if (!isTermsChecked()) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                if (termsWrapEl) termsWrapEl.classList.add('gt-terms-error');
+                shakeBtn();
+                showToast('Please agree to our Terms & Conditions to place your order.', 'error');
+                if (termsWrapEl) termsWrapEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return false;
+            }
+        }, true); /* capture phase — fires before form submit */
+    }
+
     if (checkoutForm) {
         checkoutForm.addEventListener('submit', function (e) {
+
+            /* Hard block at form level too */
+            if (!isTermsChecked()) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                if (termsWrapEl) termsWrapEl.classList.add('gt-terms-error');
+                showToast('Please agree to our Terms & Conditions to place your order.', 'error');
+                return false;
+            }
+
+            if (termsWrapEl) termsWrapEl.classList.remove('gt-terms-error');
+
+            /* ── Phone check ── */
             if (phoneInput && !validatePhone(phoneInput.value)) {
                 e.preventDefault();
                 phoneError.textContent   = 'Enter a valid BD number, e.g. 01316049157';

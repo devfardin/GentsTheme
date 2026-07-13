@@ -1,26 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // // ── Hero Slider ───────────────────────────────────────────────
-    // const slides = document.querySelectorAll('.hero-slide');
-    // const dots   = document.querySelectorAll('.dot');
-    // let current  = 0;
-    // let timer;
-
-    // if (slides.length) {
-    //     const goTo = (index) => {
-    //         slides[current].classList.remove('active');
-    //         dots[current]?.classList.remove('active');
-    //         current = (index + slides.length) % slides.length;
-    //         slides[current].classList.add('active');
-    //         dots[current]?.classList.add('active');
-    //     };
-    //     const autoPlay = () => { timer = setInterval(() => goTo(current + 1), 4000); };
-    //     document.querySelector('.hero-btn.next')?.addEventListener('click', () => { clearInterval(timer); goTo(current + 1); autoPlay(); });
-    //     document.querySelector('.hero-btn.prev')?.addEventListener('click', () => { clearInterval(timer); goTo(current - 1); autoPlay(); });
-    //     dots.forEach(dot => dot.addEventListener('click', () => { clearInterval(timer); goTo(+dot.dataset.index); autoPlay(); }));
-    //     autoPlay();
-    // }
-
     // ── Shop Sidebar Filter Toggle (mobile) ───────────────────────
     const toggle  = document.getElementById('gt-filter-toggle');
     const sidebar = document.getElementById('gt-shop-sidebar');
@@ -169,6 +148,10 @@ document.addEventListener('DOMContentLoaded', () => {
         html += `<button class="gt-var-confirm" disabled>Select options</button></div>`;
         modalBody.innerHTML = html;
 
+        // Constrain image so it never overflows the modal
+        const imgEl = modalBody.querySelector('.gt-var-img img');
+        if (imgEl)
+
         // Pre-check availability for each term in required attrs
         attrs.filter(a => a.required).forEach(attr => {
             attr.terms.forEach(t => {
@@ -186,87 +169,90 @@ document.addEventListener('DOMContentLoaded', () => {
                     .catch(() => {});
             });
         });
-
-        modalBody.addEventListener('click', e => {
-            // Swatch click
-            const swatch = e.target.closest('.gt-swatch');
-            if (swatch) {
-                if (swatch.classList.contains('gt-swatch--unavailable')) return;
-                const { key, slug } = swatch.dataset;
-                if (selected[key] === slug) {
-                    delete selected[key];
-                    swatch.classList.remove('active');
-                    currentVar = null;
-                    syncConfirm();
-                } else {
-                    selected[key] = slug;
-                    modalBody.querySelectorAll(`.gt-swatch[data-key="${key}"]`).forEach(b => b.classList.remove('active'));
-                    swatch.classList.add('active');
-                    resolveVariation(v => {
-                        currentVar = v;
-                        if (v) {
-                            const priceEl = modalBody.querySelector('#gt-var-price');
-                            if (priceEl) priceEl.innerHTML = fmtPrice(v);
-                        }
-                        syncConfirm();
-                    });
-                }
-                return;
-            }
-
-            // Confirm button click
-            const confirm = e.target.closest('.gt-var-confirm');
-            if (!confirm || confirm.disabled || !currentVar?.variation_id) return;
-
-            confirm.disabled    = true;
-            confirm.textContent = '…';
-
-            const storeRoot = (typeof wpApiSettings !== 'undefined' && wpApiSettings.root)
-                ? wpApiSettings.root : '/wp-json/';
-
-            // Build variation array: taxonomy attrs use taxonomy slug, custom attrs use name
-            const variationData = attrs
-                .filter(a => selected[a.key])
-                .map(a => ({
-                    attribute: a.taxonomy || a.name,
-                    value:     selected[a.key],
-                }));
-
-            fetch(`${storeRoot}wc/store/v1/cart`, { credentials: 'include' })
-                .then(r => {
-                    const nonce = r.headers.get('Nonce');
-                    return fetch(`${storeRoot}wc/store/v1/cart/add-item`, {
-                        method: 'POST',
-                        credentials: 'include',
-                        headers: { 'Content-Type': 'application/json', 'Nonce': nonce || '' },
-                        body: JSON.stringify({
-                            id:        parseInt(currentVar.variation_id),
-                            quantity:  1,
-                            variation: variationData,
-                        }),
-                    });
-                })
-                .then(r => r.json())
-                .then(data => {
-                    if (data.code) {
-                        syncConfirm();
-                        showPopupToast('error', 'Could not add to cart. Please try again.');
-                        return;
-                    }
-                    closePopup();
-                    // Refresh cart badge + mini-cart sidebar
-                    if (window.gtCart) {
-                        window.gtCart.fetchFragments();
-                        if (intent !== 'buy') window.gtCart.showToast(productName);
-                    }
-                    if (intent === 'buy') window.location.href = checkoutUrl;
-                })
-                .catch(() => {
-                    syncConfirm();
-                    showPopupToast('error', 'Something went wrong. Please try again.');
-                });
-        });
     }
+
+    // Single delegated listener on modalBody — registered once, not inside render()
+    modalBody.addEventListener('click', e => {
+        // Swatch click
+        const swatch = e.target.closest('.gt-swatch');
+        if (swatch) {
+            if (swatch.classList.contains('gt-swatch--unavailable')) return;
+            const { key, slug } = swatch.dataset;
+            if (selected[key] === slug) {
+                delete selected[key];
+                swatch.classList.remove('active');
+                currentVar = null;
+                syncConfirm();
+            } else {
+                selected[key] = slug;
+                modalBody.querySelectorAll(`.gt-swatch[data-key="${key}"]`).forEach(b => b.classList.remove('active'));
+                swatch.classList.add('active');
+                resolveVariation(v => {
+                    currentVar = v;
+                    if (v) {
+                        const priceEl = modalBody.querySelector('#gt-var-price');
+                        if (priceEl) priceEl.innerHTML = fmtPrice(v);
+                        // Update variation image if provided
+                        const imgEl = modalBody.querySelector('.gt-var-img img');
+                        if (imgEl && v.image?.src) { imgEl.src = v.image.src; imgEl.alt = v.image.alt || ''; }
+                    }
+                    syncConfirm();
+                });
+            }
+            return;
+        }
+
+        // Confirm button click
+        const confirm = e.target.closest('.gt-var-confirm');
+        if (!confirm || confirm.disabled || !currentVar?.variation_id) return;
+
+        const productName = modalBody.querySelector('.gt-var-title')?.textContent || '';
+        confirm.disabled    = true;
+        confirm.textContent = '…';
+
+        const storeRoot = (typeof wpApiSettings !== 'undefined' && wpApiSettings.root)
+            ? wpApiSettings.root : '/wp-json/';
+
+        const variationData = attrs
+            .filter(a => selected[a.key])
+            .map(a => ({
+                attribute: a.taxonomy || a.name,
+                value:     selected[a.key],
+            }));
+
+        fetch(`${storeRoot}wc/store/v1/cart`, { credentials: 'include' })
+            .then(r => {
+                const nonce = r.headers.get('Nonce');
+                return fetch(`${storeRoot}wc/store/v1/cart/add-item`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json', 'Nonce': nonce || '' },
+                    body: JSON.stringify({
+                        id:        parseInt(currentVar.variation_id),
+                        quantity:  1,
+                        variation: variationData,
+                    }),
+                });
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.code) {
+                    syncConfirm();
+                    showPopupToast('error', 'Could not add to cart. Please try again.');
+                    return;
+                }
+                closePopup();
+                if (window.gtCart) {
+                    window.gtCart.fetchFragments();
+                    if (intent !== 'buy') window.gtCart.showToast(productName);
+                }
+                if (intent === 'buy') window.location.href = checkoutUrl;
+            })
+            .catch(() => {
+                syncConfirm();
+                showPopupToast('error', 'Something went wrong. Please try again.');
+            });
+    });
 
     // Delegated trigger — works for AJAX-injected cards too
     document.addEventListener('click', e => {

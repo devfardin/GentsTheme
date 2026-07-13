@@ -165,6 +165,16 @@ class GentsTimeAssets
                 'all'
             );
         }
+
+        if (is_wc_endpoint_url('order-received')) {
+            wp_enqueue_style(
+                'gentstime-thankyou',
+                get_stylesheet_directory_uri() . '/assets/css/thankyou.css',
+                [],
+                GENTSTIME_VERSION,
+                'all'
+            );
+        }
     }
 
     public function enqueue_scripts()

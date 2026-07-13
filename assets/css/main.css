@@ -149,14 +149,13 @@ a {
 
 .btn-primary {
     display: inline-block;
-    font-family: var(--font-ui);
-    font-size: .80rem;
+    font-size: 14px;
     font-weight: 600;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     background: var(--brand);
     color: var(--text-white);
     border: 2px solid var(--brand);
-    padding: 12px 30px;
+    padding: 14px 30px;
     cursor: pointer;
     transition: var(--transition);
     text-align: center;
@@ -165,8 +164,8 @@ a {
 
 @media only screen and (min-width: 768px) {
     .btn-primary {
-        padding: 11px 35px;
-        font-size: .90rem;
+        padding: 14px 25px;
+        font-size: 15px;
     }
 }
 
@@ -272,10 +271,6 @@ section {
 }
 
 .breadcrumb {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
     font-size: 16px;
     color: var(--text-secondary);
 }

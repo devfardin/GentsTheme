@@ -360,6 +360,141 @@ function gt_remove_coupon_ajax()
     ));
 }
 
+/* ══════════════════════════════════════════════════════════════════
+   PDF Invoice Download
+   ══════════════════════════════════════════════════════════════════ */
+add_action('admin_post_gt_download_invoice', 'gt_download_invoice');
+add_action('admin_post_nopriv_gt_download_invoice', 'gt_download_invoice');
+
+function gt_download_invoice() {
+    $order_id = absint($_POST['order_id'] ?? 0);
+    if (!$order_id || !wp_verify_nonce($_POST['nonce'] ?? '', 'gt_invoice_' . $order_id)) {
+        wp_die('Invalid request.');
+    }
+
+    $order = wc_get_order($order_id);
+    if (!$order) wp_die('Order not found.');
+
+    $full_name  = trim($order->get_billing_first_name() . ' ' . $order->get_billing_last_name());
+    $phone      = $order->get_billing_phone();
+    $email      = $order->get_billing_email();
+    $address    = implode(', ', array_filter([$order->get_billing_address_1(), $order->get_billing_city(), $order->get_billing_state()]));
+    $date       = wc_format_datetime($order->get_date_created());
+    $subtotal   = strip_tags(wc_price($order->get_subtotal()));
+    $shipping   = (float) $order->get_shipping_total();
+    $discount   = (float) $order->get_discount_total();
+    $total      = strip_tags(wc_price($order->get_total()));
+    $payment    = $order->get_payment_method_title();
+    $status     = wc_get_order_status_name($order->get_status());
+    $currency   = get_woocommerce_currency_symbol();
+
+    // Build HTML for PDF
+    ob_start(); ?>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+    body { font-family: DejaVu Sans, sans-serif; font-size: 13px; color: #171717; margin: 0; padding: 30px; }
+    h1 { font-size: 22px; margin: 0 0 4px; color: #00A486; }
+    .sub { font-size: 13px; color: #737373; margin: 0 0 24px; }
+    .meta { display: flex; gap: 40px; margin-bottom: 24px; }
+    .meta-item label { font-size: 10px; text-transform: uppercase; color: #737373; display: block; margin-bottom: 2px; }
+    .meta-item span  { font-weight: 700; font-size: 13px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th { background: #E5F7F4; padding: 9px 10px; text-align: left; font-size: 11px; text-transform: uppercase; color: #737373; }
+    td { padding: 10px; border-bottom: 1px solid #E5E5E5; font-size: 13px; }
+    .total-row td { font-weight: 800; font-size: 15px; border-top: 2px solid #E5E5E5; border-bottom: none; }
+    .address-box { background: #FAFAFA; border: 1px solid #E5E5E5; border-radius: 8px; padding: 14px 16px; margin-bottom: 20px; }
+    .address-box p { margin: 0 0 6px; font-size: 13px; }
+    .footer-note { text-align: center; font-size: 12px; color: #737373; margin-top: 30px; border-top: 1px solid #E5E5E5; padding-top: 16px; }
+    .brand { color: #00A486; font-weight: 700; }
+</style>
+</head>
+<body>
+<h1>Gents Time</h1>
+<p class="sub">Invoice — Order #<?php echo esc_html($order->get_order_number()); ?></p>
+
+<table style="width:100%;margin-bottom:20px;border-collapse:collapse">
+<tr>
+<td style="width:50%;vertical-align:top;padding:0">
+    <div class="address-box">
+        <p><strong>Bill To:</strong></p>
+        <p><?php echo esc_html($full_name); ?></p>
+        <?php if ($phone): ?><p>📞 <?php echo esc_html($phone); ?></p><?php endif; ?>
+        <?php if ($email): ?><p>✉️ <?php echo esc_html($email); ?></p><?php endif; ?>
+        <?php if ($address): ?><p>📍 <?php echo esc_html($address); ?></p><?php endif; ?>
+    </div>
+</td>
+<td style="width:50%;vertical-align:top;padding:0 0 0 16px">
+    <div class="address-box">
+        <p><strong>Order Details:</strong></p>
+        <p>Date: <?php echo esc_html($date); ?></p>
+        <p>Status: <?php echo esc_html($status); ?></p>
+        <p>Payment: <?php echo esc_html($payment); ?></p>
+    </div>
+</td>
+</tr>
+</table>
+
+<table>
+    <thead><tr><th>Product</th><th>Qty</th><th>Unit Price</th><th>Subtotal</th></tr></thead>
+    <tbody>
+    <?php foreach ($order->get_items() as $item):
+        $product  = $item->get_product();
+        $unit_p   = $product ? strip_tags(wc_price($product->get_price())) : strip_tags(wc_price($item->get_subtotal() / max(1, $item->get_quantity())));
+        $line_sub = strip_tags(wc_price($item->get_subtotal()));
+        $metas    = $item->get_formatted_meta_data('_', true);
+        $meta_str = '';
+        foreach ($metas as $m) $meta_str .= ' | ' . strip_tags($m->display_key) . ': ' . strip_tags($m->display_value);
+    ?>
+    <tr>
+        <td><?php echo esc_html($item->get_name() . $meta_str); ?></td>
+        <td><?php echo esc_html($item->get_quantity()); ?></td>
+        <td><?php echo esc_html($unit_p); ?></td>
+        <td><?php echo esc_html($line_sub); ?></td>
+    </tr>
+    <?php endforeach; ?>
+    </tbody>
+    <tfoot>
+        <tr><td colspan="3">Subtotal</td><td><?php echo esc_html($subtotal); ?></td></tr>
+        <tr><td colspan="3">Delivery</td><td><?php echo $shipping > 0 ? esc_html(strip_tags(wc_price($shipping))) : 'Free'; ?></td></tr>
+        <?php if ($discount > 0): ?>
+        <tr><td colspan="3">Discount</td><td>-<?php echo esc_html(strip_tags(wc_price($discount))); ?></td></tr>
+        <?php endif; ?>
+        <tr class="total-row"><td colspan="3">Total</td><td><?php echo esc_html($total); ?></td></tr>
+    </tfoot>
+</table>
+
+<div class="footer-note">
+    Thank you for shopping with <span class="brand">Gents Time</span>!<br>
+    Questions? Call +880 1316-049157 or email support@gentstime.com
+</div>
+</body>
+</html>
+<?php
+    $html = ob_get_clean();
+
+    // Use Dompdf if available, otherwise fallback to plain HTML download
+    $dompdf_path = WP_CONTENT_DIR . '/plugins/gent/vendor/dompdf/dompdf/autoload.inc.php';
+    if (file_exists($dompdf_path)) {
+        require_once $dompdf_path;
+        $dompdf = new \Dompdf\Dompdf(['isRemoteEnabled' => false]);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: attachment; filename="invoice-' . $order_id . '.pdf"');
+        echo $dompdf->output();
+    } else {
+        // Fallback: deliver as HTML (browser can print-to-PDF)
+        header('Content-Type: text/html; charset=UTF-8');
+        header('Content-Disposition: attachment; filename="invoice-' . $order_id . '.html"');
+        echo $html;
+    }
+    exit;
+}
+
 /* ── Remove WC's built-in BD state list so our custom districts pass validation ── */
 add_filter('woocommerce_states', function ($states) {
     if (isset($states['BD'])) {

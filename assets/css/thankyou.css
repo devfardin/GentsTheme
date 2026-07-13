@@ -1,0 +1,350 @@
+/* ==========================================================================
+   GentsTime — Thank You Page
+   ========================================================================== */
+
+.gt-ty-wrap { padding: 48px 0 72px; }
+
+/* ── Header ── */
+.gt-ty-header {
+    text-align: center;
+    margin-bottom: 36px;
+}
+
+.gt-ty-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--brand);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 8px 24px rgba(0, 164, 134, .28);
+}
+.gt-ty-icon svg {
+    width: 36px;
+    height: 36px;
+    stroke: #fff;
+}
+
+.gt-ty-title {
+    font-family: var(--font-brand);
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 6px;
+}
+
+.gt-ty-subtitle {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--brand);
+    margin: 0 0 16px;
+}
+
+.gt-ty-greeting {
+    font-size: 17px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* ── Meta Bar ── */
+.gt-ty-meta-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 32px;
+}
+
+.gt-ty-meta-item {
+    background: var(--bg-card);
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.gt-ty-meta-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--text-secondary);
+}
+
+.gt-ty-meta-val {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.gt-ty-status {
+    color: var(--brand);
+    text-transform: capitalize;
+}
+
+/* ── Body two-column ── */
+.gt-ty-body {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+
+/* ── Card ── */
+.gt-ty-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+}
+
+.gt-ty-card-heading {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* ── Items table ── */
+.gt-ty-items-head {
+    display: grid;
+    grid-template-columns: 2fr 1fr 80px 1fr;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 2px solid var(--border);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.gt-ty-item-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 80px 1fr;
+    gap: 12px;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+}
+.gt-ty-item-row:last-of-type { border-bottom: none; }
+
+.gt-ty-item-product { display: flex; align-items: center; gap: 12px; }
+
+.gt-ty-item-img {
+    width: 60px;
+    height: 72px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--bg-section);
+}
+.gt-ty-item-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.gt-ty-item-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 4px;
+    line-height: 1.4;
+}
+
+.gt-ty-item-var {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.gt-ty-item-price { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+.gt-ty-item-qty   { font-size: 14px; color: var(--text-secondary); }
+.gt-ty-item-sub   { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+
+/* ── Order Summary ── */
+.gt-ty-summary {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 2px solid var(--border);
+}
+
+.gt-ty-sum-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    padding: 6px 0;
+    color: var(--text-primary);
+}
+.gt-ty-sum-row span:first-child { color: var(--text-secondary); }
+.gt-ty-sum-row span:last-child  { font-weight: 600; }
+
+.gt-ty-discount span { color: #ef4444 !important; }
+.gt-ty-free { color: var(--brand) !important; font-weight: 600; }
+
+.gt-ty-sum-sep { border: none; border-top: 1px solid var(--border); margin: 8px 0; }
+
+.gt-ty-sum-total span {
+    font-size: 17px !important;
+    font-weight: 800 !important;
+    color: var(--text-primary) !important;
+}
+
+/* ── Billing Address ── */
+.gt-ty-address p {
+    font-size: 14px;
+    color: var(--text-primary);
+    margin: 0 0 8px;
+    line-height: 1.6;
+}
+.gt-ty-address p:last-child { margin-bottom: 0; }
+
+/* ── Thank You Message ── */
+.gt-ty-message {
+    background: var(--bg-brand);
+    border: 1px solid var(--brand-soft);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    text-align: center;
+}
+.gt-ty-message p {
+    font-size: 15px;
+    color: var(--text-primary);
+    line-height: 1.7;
+    margin: 0;
+}
+
+/* ── Contact ── */
+.gt-ty-contact {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 32px;
+}
+
+.gt-ty-contact-heading {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+}
+
+.gt-ty-contact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.gt-ty-contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.gt-ty-contact-icon { font-size: 22px; line-height: 1; margin-top: 2px; }
+
+.gt-ty-contact-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin: 0 0 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.gt-ty-contact-val {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    text-decoration: none;
+    transition: color var(--transition);
+}
+a.gt-ty-contact-val:hover { color: var(--brand); }
+
+/* ── Action Buttons ── */
+.gt-ty-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.gt-ty-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    transition: background var(--transition), color var(--transition), border-color var(--transition), opacity var(--transition);
+    font-family: inherit;
+}
+.gt-ty-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+.gt-ty-btn-primary {
+    background: var(--brand);
+    color: #fff;
+}
+.gt-ty-btn-primary:hover { background: var(--brand-hover); }
+.gt-ty-btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.gt-ty-btn-outline {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1.5px solid var(--border-dark);
+}
+.gt-ty-btn-outline:hover { border-color: var(--brand); color: var(--brand); }
+
+.gt-ty-btn-ghost {
+    background: var(--bg-section);
+    color: var(--text-secondary);
+    border: 1.5px solid var(--border);
+}
+.gt-ty-btn-ghost:hover { color: var(--text-primary); border-color: var(--border-dark); }
+
+/* ── Print styles ── */
+@media print {
+    header, footer, .gt-ty-actions, .gt-ty-contact { display: none !important; }
+    .gt-ty-wrap { padding: 0; }
+    .gt-ty-card, .gt-ty-meta-bar, .gt-ty-message { border: 1px solid #ccc !important; box-shadow: none !important; }
+    .gt-ty-body { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+    .gt-ty-meta-bar { grid-template-columns: repeat(2, 1fr); }
+    .gt-ty-body { grid-template-columns: 1fr; }
+    .gt-ty-contact-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 600px) {
+    .gt-ty-title { font-size: 28px; }
+    .gt-ty-meta-bar { grid-template-columns: 1fr 1fr; }
+    .gt-ty-items-head { display: none; }
+    .gt-ty-item-row { grid-template-columns: 1fr; gap: 6px; }
+    .gt-ty-item-price::before { content: 'Price: '; font-weight: 400; color: var(--text-secondary); font-size: 12px; }
+    .gt-ty-item-qty::before   { content: 'Qty: ';   font-weight: 400; color: var(--text-secondary); font-size: 12px; }
+    .gt-ty-item-sub::before   { content: 'Subtotal: '; font-weight: 400; color: var(--text-secondary); font-size: 12px; }
+    .gt-ty-contact-grid { grid-template-columns: 1fr; }
+    .gt-ty-actions { flex-direction: column; align-items: stretch; }
+    .gt-ty-btn { justify-content: center; }
+}

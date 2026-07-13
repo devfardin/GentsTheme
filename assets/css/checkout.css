@@ -339,7 +339,26 @@
 /* ══════════════════════════════════════════
    Payment Methods
 ══════════════════════════════════════════ */
+.place_order_button_wrap {
+    width: 100%;
+    display: inline-grid;
+}
+.gt-place-order-btn {
+    padding: 16px 30px;
+    transition: background .2s, opacity .2s, transform .1s, box-shadow .2s;
+}
 
+
+
+/* Shake animation when blocked */
+@keyframes gt-shake {
+    0%, 100% { transform: translateX(0); }
+    20%       { transform: translateX(-6px); }
+    40%       { transform: translateX(6px); }
+    60%       { transform: translateX(-4px); }
+    80%       { transform: translateX(4px); }
+}
+.gt-btn-shake { animation: gt-shake .4s ease; }
 .gt-payment-methods {
     list-style: none;
     padding: 0;
@@ -479,6 +498,69 @@
 .gt-terms { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
 .gt-terms a { color: var(--brand); text-decoration: underline; }
 
+/* ── Terms Agree Checkbox ── */
+.gt-terms-agree {
+    margin-bottom: 16px;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border-light);
+    border-radius: 10px;
+    background: var(--bg-section);
+    transition: border-color .2s, box-shadow .2s;
+}
+.gt-terms-agree.gt-terms-error {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239,68,68,.12);
+    background: #fff5f5;
+}
+.gt-terms-agree-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    margin: 0;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    user-select: none;
+}
+.gt-terms-agree-label input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border-dark);
+    border-radius: 5px;
+    background: var(--bg-card);
+    flex-shrink: 0;
+    cursor: pointer;
+    position: relative;
+    transition: border-color .2s, background .2s;
+}
+.gt-terms-agree-label input[type="checkbox"]:checked {
+    background: var(--brand);
+    border-color: var(--brand);
+}
+.gt-terms-agree-label input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 0px;
+    width: 5px;
+    height: 9px;
+    border: 2px solid #fff;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg);
+}
+.gt-terms-link {
+    color: var(--brand);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color .2s;
+}
+.gt-terms-link:hover { color: var(--brand-hover); }
+
 /* ── Empty cart ── */
 .gt-empty-cart { padding: 80px 0; text-align: center; }
 .gt-empty-cart p { font-size: 16px; color: var(--text-secondary); margin-bottom: 24px; }
@@ -498,24 +580,37 @@
 /* ── Toast ── */
 .gt-toast {
     position: fixed;
-    bottom: 24px;
+    top: 24px;
     right: 24px;
     z-index: 99999;
-    padding: 13px 20px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    max-width: 340px;
-    box-shadow: 0 4px 20px rgba(0,0,0,.15);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    max-width: 360px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.18);
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateX(40px);
     transition: opacity .35s, transform .35s;
     pointer-events: none;
 }
-.gt-toast.gt-toast-show    { opacity: 1; transform: translateY(0); }
+.gt-toast.gt-toast-show    { opacity: 1; transform: translateX(0); }
 .gt-toast.gt-toast-success { background: #22c55e; color: #fff; }
 .gt-toast.gt-toast-error   { background: #ef4444; color: #fff; }
 .gt-toast.gt-toast-info    { background: var(--brand); color: var(--text-white); }
+.gt-toast-icon {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.25);
+    border-radius: 50%;
+}
+.gt-toast-icon svg { width: 22px; height: 22px; display: block; stroke: #fff; }
+.gt-toast-msg { font-size: 14px; font-weight: 600; line-height: 1.2; }
 
 /* ── Loading state ── */
 .gt-loading { opacity: .55; cursor: not-allowed; }

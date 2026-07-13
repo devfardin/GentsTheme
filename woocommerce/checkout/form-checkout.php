@@ -336,15 +336,28 @@ $checkout = WC()->checkout();
 
                                 <?php do_action('woocommerce_review_order_before_submit'); ?>
 
+                                <!-- Terms & Conditions -->
+                                <div class="gt-terms-agree" id="gt-terms-agree-wrap">
+                                    <label for="gt_terms_agree" class="gt-terms-agree-label">
+                                        <input type="checkbox" id="gt_terms_agree" name="gt_terms_agree" value="1">
+                                        <span class="gt-terms-agree-text">
+                                            I agree to the
+                                            <a href="<?php echo esc_url(url: home_url('/terms-and-conditions')); ?>" target="_blank" class="gt-terms-link">Terms and Conditions</a>
+                                        </span>
+                                    </label>
+                                </div>
+
                                 <!-- Place Order Button -->
-                                <button type="submit"
+                                <div class="place_order_button_wrap">
+                                    <button type="submit"
                                     class="gt-place-order-btn alt btn-primary"
                                     name="woocommerce_checkout_place_order"
                                     id="place_order"
-                                    value="Place order"
-                                    data-value="Place order">
-                                    Confirm Order
-                                </button>
+                                    value="Confirm Your Order"
+                                    data-value="Confirm Your Order">
+                                    Confirm Your Order
+                                </button>                                    
+                                </div>
 
                                 <p class="gt-secure-text">Your information is safe &amp; secure</p>
 

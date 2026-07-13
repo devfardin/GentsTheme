@@ -10,7 +10,7 @@
 .gt-sp-layout {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 35px;
+    gap: 30px;
     align-items: start;
     margin-bottom: 56px;
 }

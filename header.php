@@ -2,9 +2,7 @@
 if (!defined('ABSPATH')) {
     exit;
 }
-
 $gent_general = get_option('gent_general');
-
 
 // check when we have product id when we will sent whatsapp message about product details
 $options = get_option('gent_whatsapp');
@@ -25,7 +23,7 @@ if (is_product()) {
     $lines .= "Product: " . $product_name . "\n";
     $lines .= $product_sku ? "SKU: " . $product_sku . "\n" : '';
     $lines .= $product_cats ? "Category: " . $product_cats . "\n" : '';
-    $lines .= "Availability: " . $availability. "\n";
+    $lines .= "Availability: " . $availability . "\n";
     $lines .= "Price: " . $product_price . "\n";
     $lines .= "Link: " . $product_url . "\n\n";
     $lines .= "Please let me know about availability. Thank you!";
@@ -37,7 +35,6 @@ if (is_product()) {
     $message = urlencode($options['predefined_message'] ?? '');
 }
 
-
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -45,13 +42,6 @@ if (is_product()) {
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Google Fonts: Playfair Display (brand) + Inter (UI) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap"
-        rel="stylesheet">
 
     <?php wp_head(); ?>
 </head>
@@ -62,18 +52,24 @@ if (is_product()) {
     <!-- =============================================
          TOP BAR — black, centered promotional notice
          ============================================= -->
-    <div class="header-topbar">
-        <div class="topbar-inner">
-            <span class="topbar-notice">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path
-                        d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9 1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z" />
-                </svg>
-                Free shipping on orders over <strong>৳999</strong> &nbsp;·&nbsp; Use code <strong>GENTS10</strong> for
-                10% off
-            </span>
+    <?php
+
+    $popup_message = get_option('gent-popup');
+    $header_notice_enabled = $popup_message['header_notice_enabled']
+        ?>
+    <? if ($header_notice_enabled == 1): ?>
+        <div class="header-topbar">
+            <div class="topbar-inner">
+                <span class="topbar-notice">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path
+                            d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9 1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z" />
+                    </svg>
+                    <?php echo $popup_message['header_notice']; ?>
+                </span>
+            </div>
         </div>
-    </div>
+    <?php endif; ?>
 
     <!-- =============================================
          MAIN HEADER
@@ -246,7 +242,7 @@ if (is_product()) {
         </div>
         <?php if (function_exists('wc_get_cart_url')): ?>
             <div class="cart-sidebar-footer">
-                <a href="<?php echo esc_url(wc_get_checkout_url()); ?>" class="cart-sidebar-checkout-btn"
+                <a href="<?php echo esc_url(wc_get_checkout_url()); ?>" class="btn-primary"
                     style="width:100%;">Proceed to Checkout</a>
             </div>
         <?php endif; ?>
