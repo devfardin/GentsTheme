@@ -116,59 +116,60 @@ $checkout_url = function_exists('wc_get_checkout_url') ? wc_get_checkout_url() :
 
         <!-- ACTION TRAY ────────────────────────────────────────── -->
         <?php
-        $type        = $product->get_type();
+        $type = $product->get_type();
         $is_variable = $type === 'variable';
-        $is_simple   = $type === 'simple';
+        $is_simple = $type === 'simple';
         $purchasable = $product->is_purchasable() && $product->is_in_stock();
         $has_actions = ($purchasable && $is_simple) || $is_variable;
         ?>
         <?php if ($has_actions): ?>
             <div class="gt-card-actions">
                 <?php if ($is_variable): ?>
-                <!-- Buy Now — variable -->
-                <button type="button"
-                    class="gt-buy-btn gt-var-trigger"
-                    data-product-id="<?php echo esc_attr($product_id); ?>"
-                    data-checkout-url="<?php echo esc_url($checkout_url); ?>"
-                    data-intent="buy"
-                    aria-label="Buy <?php echo esc_attr($title); ?> now">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="15" height="15">
-                        <path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z" />
-                    </svg>
-                    <span>Buy Now</span>
-                </button>
-                <!-- Add to Cart — variable -->
-                <button type="button"
-                    class="gt-atc-btn gt-var-trigger add_to_cart_button"
-                    data-product-id="<?php echo esc_attr($product_id); ?>"
-                    data-intent="cart"
-                    aria-label="<?php echo esc_attr($product->add_to_cart_description()); ?>">
-                    <span class="gt-atc-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-                        <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM5.21 4l-.94-2H1v2h2l3.6 7.59-1.35 2.44C5.16 14.36 5 14.96 5 15.5c0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63H19c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0023.25 3H5.21z" /></svg></span>
-                </button>
+                    <!-- Buy Now — variable -->
+                    <button type="button" class="gt-buy-btn gt-var-trigger"
+                        data-product-id="<?php echo esc_attr($product_id); ?>"
+                        data-checkout-url="<?php echo esc_url($checkout_url); ?>" data-intent="buy"
+                        aria-label="Buy <?php echo esc_attr($title); ?> now">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="15" height="15">
+                            <path
+                                d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z" />
+                        </svg>
+                        <span>Buy Now</span>
+                    </button>
+                    <!-- Add to Cart — variable -->
+                    <button type="button" class="gt-atc-btn gt-var-trigger add_to_cart_button"
+                        data-product-id="<?php echo esc_attr($product_id); ?>" data-intent="cart"
+                        aria-label="<?php echo esc_attr($product->add_to_cart_description()); ?>">
+                        <span class="gt-atc-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                fill="currentColor" width="20" height="20">
+                                <path
+                                    d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM5.21 4l-.94-2H1v2h2l3.6 7.59-1.35 2.44C5.16 14.36 5 14.96 5 15.5c0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63H19c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0023.25 3H5.21z" />
+                            </svg></span>
+                    </button>
                 <?php else: ?>
-                <!-- Buy Now — simple -->
-                <a href="<?php echo esc_url($product->add_to_cart_url()); ?>"
-                    class="gt-buy-btn"
-                    data-product_id="<?php echo esc_attr($product_id); ?>"
-                    data-checkout_url="<?php echo esc_url($checkout_url); ?>"
-                    data-intent="buy"
-                    aria-label="Buy <?php echo esc_attr($title); ?> now" rel="nofollow">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="15" height="15">
-                        <path d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z" />
-                    </svg>
-                    <span>Buy Now</span>
-                </a>
-                <!-- Add to Cart — simple -->
-                <a href="<?php echo esc_url($product->add_to_cart_url()); ?>"
-                    class="gt-atc-btn ajax_add_to_cart add_to_cart_button"
-                    data-product_id="<?php echo esc_attr($product_id); ?>"
-                    data-product_sku="<?php echo esc_attr($product->get_sku()); ?>"
-                    data-quantity="1"
-                    aria-label="<?php echo esc_attr($product->add_to_cart_description()); ?>" rel="nofollow">
-                    <span class="gt-atc-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-                        <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM5.21 4l-.94-2H1v2h2l3.6 7.59-1.35 2.44C5.16 14.36 5 14.96 5 15.5c0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63H19c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0023.25 3H5.21z" /></svg></span>
-                </a>
+                    <!-- Buy Now — simple -->
+                    <a href="<?php echo esc_url($product->add_to_cart_url()); ?>" class="gt-buy-btn"
+                        data-product_id="<?php echo esc_attr($product_id); ?>"
+                        data-checkout_url="<?php echo esc_url($checkout_url); ?>" data-intent="buy"
+                        aria-label="Buy <?php echo esc_attr($title); ?> now" rel="nofollow">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="15" height="15">
+                            <path
+                                d="M20 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z" />
+                        </svg>
+                        <span>Buy Now</span>
+                    </a>
+                    <!-- Add to Cart — simple -->
+                    <a href="<?php echo esc_url($product->add_to_cart_url()); ?>"
+                        class="gt-atc-btn ajax_add_to_cart add_to_cart_button"
+                        data-product_id="<?php echo esc_attr($product_id); ?>"
+                        data-product_sku="<?php echo esc_attr($product->get_sku()); ?>" data-quantity="1"
+                        aria-label="<?php echo esc_attr($product->add_to_cart_description()); ?>" rel="nofollow">
+                        <span class="gt-atc-label"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                fill="currentColor" width="20" height="20">
+                                <path
+                                    d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM5.21 4l-.94-2H1v2h2l3.6 7.59-1.35 2.44C5.16 14.36 5 14.96 5 15.5c0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63H19c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0023.25 3H5.21z" />
+                            </svg></span>
+                    </a>
                 <?php endif; ?>
             </div>
         <?php elseif (!$purchasable): ?>

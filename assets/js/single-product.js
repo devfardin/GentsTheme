@@ -413,14 +413,23 @@ document.addEventListener('DOMContentLoaded', function () {
             /* close all others */
             allTriggers.forEach(function (t) {
                 t.setAttribute('aria-expanded', 'false');
-                t.nextElementSibling.style.display = 'none';
+                var panel = t.nextElementSibling;
+                panel.style.maxHeight = '0';
+                panel.classList.remove('is-open');
             });
             /* toggle clicked */
             if (!expanded) {
                 trigger.setAttribute('aria-expanded', 'true');
-                trigger.nextElementSibling.style.display = 'block';
+                var panel = trigger.nextElementSibling;
+                panel.classList.add('is-open');
+                panel.style.maxHeight = panel.scrollHeight + 'px';
             }
         });
+    });
+
+    /* set initial open panel height */
+    document.querySelectorAll('.gt-accordion-panel.is-open').forEach(function (panel) {
+        panel.style.maxHeight = panel.scrollHeight + 'px';
     });
 
 });

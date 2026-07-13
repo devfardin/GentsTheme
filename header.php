@@ -2,6 +2,42 @@
 if (!defined('ABSPATH')) {
     exit;
 }
+
+$gent_general = get_option('gent_general');
+
+
+// check when we have product id when we will sent whatsapp message about product details
+$options = get_option('gent_whatsapp');
+$whatsapp_number = $options['whatsapp_number'] ?? '';
+
+if (is_product()) {
+    $product_id = get_the_ID();
+    $product = wc_get_product($product_id);
+    $product_name = $product->get_name();
+    $product_price = html_entity_decode(wp_strip_all_tags(wc_price($product->get_price())), ENT_QUOTES);
+    $product_sku = $product->get_sku();
+    $product_url = $product->get_permalink();
+    $stock_status = $product->get_stock_status();
+    $availability = $stock_status === 'instock' ? 'In Stock' : ($stock_status === 'onbackorder' ? 'On Backorder' : 'Out of Stock');
+    $product_cats = wp_strip_all_tags(wc_get_product_category_list($product_id, ', '));
+
+    $lines = "Hello! I'm interested in the following product:" . "\n\n";
+    $lines .= "Product: " . $product_name . "\n";
+    $lines .= $product_sku ? "SKU: " . $product_sku . "\n" : '';
+    $lines .= $product_cats ? "Category: " . $product_cats . "\n" : '';
+    $lines .= "Availability: " . $availability. "\n";
+    $lines .= "Price: " . $product_price . "\n";
+    $lines .= "Link: " . $product_url . "\n\n";
+    $lines .= "Please let me know about availability. Thank you!";
+
+    $message = urlencode($lines);
+} else {
+    $btn = $options['button_text'] ?? 'Chat with us';
+    $show_on_desktop = $options['show_on_desktop'];
+    $message = urlencode($options['predefined_message'] ?? '');
+}
+
+
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -95,8 +131,9 @@ if (!defined('ABSPATH')) {
                 </a>
 
                 <!-- WhatsApp -->
-                <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer"
-                    class="header-icon-btn whatsapp-btn" aria-label="WhatsApp">
+                <a href="https://wa.me/<?php echo esc_attr($whatsapp_number); ?>?text=<?php echo $message; ?>"
+                    target="_blank" rel="noopener noreferrer" class="header-icon-btn whatsapp-btn"
+                    aria-label="WhatsApp">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                         <path
                             d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
@@ -194,7 +231,9 @@ if (!defined('ABSPATH')) {
             <span class="cart-sidebar-title">Your Cart</span>
             <button class="cart-sidebar-close" id="cart-sidebar-close" aria-label="Close cart">
                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 30 30">
-                    <path d="M14.9996 13.2331L21.1869 7.0459L22.9546 8.81366L16.7674 15.0009L22.9546 21.188L21.1869 22.9557L14.9996 16.7686L8.81245 22.9557L7.04468 21.188L13.2319 15.0009L7.04468 8.81366L8.81245 7.0459L14.9996 13.2331Z" fill="#00A486" />
+                    <path
+                        d="M14.9996 13.2331L21.1869 7.0459L22.9546 8.81366L16.7674 15.0009L22.9546 21.188L21.1869 22.9557L14.9996 16.7686L8.81245 22.9557L7.04468 21.188L13.2319 15.0009L7.04468 8.81366L8.81245 7.0459L14.9996 13.2331Z"
+                        fill="#00A486" />
                 </svg>
             </button>
         </div>
@@ -206,9 +245,10 @@ if (!defined('ABSPATH')) {
             <?php endif; ?>
         </div>
         <?php if (function_exists('wc_get_cart_url')): ?>
-        <div class="cart-sidebar-footer">
-            <a href="<?php echo esc_url( wc_get_checkout_url() ); ?>" class="cart-sidebar-checkout-btn" style="width:100%;">Proceed to Checkout</a>
-        </div>
+            <div class="cart-sidebar-footer">
+                <a href="<?php echo esc_url(wc_get_checkout_url()); ?>" class="cart-sidebar-checkout-btn"
+                    style="width:100%;">Proceed to Checkout</a>
+            </div>
         <?php endif; ?>
     </div>
     <!-- /cart-sidebar -->

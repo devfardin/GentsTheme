@@ -19,7 +19,7 @@ if (empty($slides)) return;
         $active = $index === 0 ? ' hs-slide--active' : '';
     ?>
         <div class="hs-slide<?php echo $active; ?>">
-            <div class="hs-slide__bg" style="background-image:url('<?php echo esc_url($img); ?>')"></div>
+            <div class="hs-slide__bg" style="background-image:url('<?php  echo esc_url($img); ?>')"></div>
         </div>
     <?php endforeach; ?>
 
@@ -78,26 +78,6 @@ if (empty($slides)) return;
                     </div>
                 <?php endforeach; ?>
             </div>
-
-            <!-- Stats -->
-            <?php if (!empty($stats)): ?>
-                <div class="hs-stats">
-                    <?php foreach ($stats as $stat): ?>
-                        <div class="hs-stat">
-                            <?php if (!empty($stat['icon_class'])): ?>
-                                <div class="hs-stat__icon">
-                                    <i class="<?php echo esc_attr($stat['icon_class']); ?>"></i>
-                                </div>
-                            <?php endif; ?>
-                            <div>
-                                <div class="hs-stat__number"><?php echo esc_html($stat['number']); ?></div>
-                                <div class="hs-stat__label"><?php echo esc_html($stat['label']); ?></div>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-
         </div>
     </div>
     </div>

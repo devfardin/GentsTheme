@@ -17,12 +17,15 @@ if (is_product()) {
     $product_sku   = $product->get_sku();
     $product_url   = $product->get_permalink();
     $product_cats  = wp_strip_all_tags( wc_get_product_category_list( $product_id, ', ' ) );
-
+   $stock_status = $product->get_stock_status();
+    $availability = $stock_status === 'instock' ? 'In Stock' : ($stock_status === 'onbackorder' ? 'On Backorder' : 'Out of Stock');
+    
     $lines  = "Hello! I'm interested in the following product:" . "\n\n";
     $lines .= "Product: " . $product_name . "\n";
     $lines .= $product_sku   ? "SKU: "      . $product_sku   . "\n" : '';
     $lines .= $product_cats  ? "Category: " . $product_cats  . "\n" : '';
     $lines .= "Price: "    . $product_price . "\n";
+    $lines .= "Availability: " . $availability. "\n";
     $lines .= "Link: "     . $product_url   . "\n\n";
     $lines .= "Please let me know about availability. Thank you!";
 

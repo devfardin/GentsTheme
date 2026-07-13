@@ -16,7 +16,7 @@ class GentsTimeAssets
 
     public function enqueue_styles()
     {
-       
+
         wp_enqueue_style(
             'gentstime-main',
             get_stylesheet_directory_uri() . '/assets/css/main.css',
@@ -75,7 +75,7 @@ class GentsTimeAssets
             [],
             GENTSTIME_VERSION,
             'all'
-        ); 
+        );
 
         wp_enqueue_style(
             'gentstime-mobile-nav',
@@ -91,13 +91,17 @@ class GentsTimeAssets
             GENTSTIME_VERSION,
             'all'
         );
-        wp_enqueue_style(
-            'content-product',
-            get_stylesheet_directory_uri() . '/assets/css/content-procuct.css',
-            [],
-            GENTSTIME_VERSION,
-            'all'
-        );
+
+        // conditionaly apply content-product page style
+        
+            wp_enqueue_style(
+                'content-product',
+                get_stylesheet_directory_uri() . '/assets/css/content-procuct.css',
+                [],
+                GENTSTIME_VERSION,
+                'all'
+            );
+       
         wp_enqueue_style(
             'gentstime-cta',
             get_stylesheet_directory_uri() . '/assets/css/cta.css',
@@ -106,31 +110,31 @@ class GentsTimeAssets
             'all'
         );
 
-            // Swiper CDN
-            wp_enqueue_style(
-                'swiper-CDN',
-                '//cdn.jsdelivr.net/npm/swiper@14.0.1/swiper-bundle.min.css',
-                [],
-                GENTSTIME_VERSION,
-                'all'
-            );
-             // Swiper CDN
-            wp_enqueue_style(
-                'swiper-main',
-                get_stylesheet_directory_uri() . '/assets/css/swiper.css',
-                [],
-                GENTSTIME_VERSION,
-                'all'
-            );
+        // Swiper CDN
+        wp_enqueue_style(
+            'swiper-CDN',
+            '//cdn.jsdelivr.net/npm/swiper@14.0.1/swiper-bundle.min.css',
+            [],
+            GENTSTIME_VERSION,
+            'all'
+        );
+        // Swiper CDN
+        wp_enqueue_style(
+            'swiper-main',
+            get_stylesheet_directory_uri() . '/assets/css/swiper.css',
+            [],
+            GENTSTIME_VERSION,
+            'all'
+        );
 
-            wp_enqueue_style(
-                'gentstime-recently-viewed',
-                get_stylesheet_directory_uri() . '/assets/css/recently-viewed.css',
-                [],
-                GENTSTIME_VERSION,
-                'all'
-            );
-     
+        wp_enqueue_style(
+            'gentstime-recently-viewed',
+            get_stylesheet_directory_uri() . '/assets/css/recently-viewed.css',
+            [],
+            GENTSTIME_VERSION,
+            'all'
+        );
+
 
         if (is_page('about-us') || is_page('about')) {
             wp_enqueue_style(
@@ -166,15 +170,15 @@ class GentsTimeAssets
     public function enqueue_scripts()
     {
         // swiper js
-        
+
         wp_enqueue_script(
             'swiper-cdn',
             '//cdn.jsdelivr.net/npm/swiper@14.0.1/swiper-bundle.min.js',
             [],
             GENTSTIME_VERSION,
             true
-        ); 
-        
+        );
+
         // Hero Slider script
         wp_enqueue_script(
             'hero-slider',
@@ -184,14 +188,14 @@ class GentsTimeAssets
             true
         );
 
-         wp_enqueue_script(
+        wp_enqueue_script(
             'swiper-main',
             get_stylesheet_directory_uri() . '/assets/js/swiper.js',
             ['swiper-cdn'],
             GENTSTIME_VERSION,
             true
         );
-        
+
         wp_enqueue_script(
             'gentstime-main',
             get_stylesheet_directory_uri() . '/assets/js/main.js',
@@ -214,7 +218,7 @@ class GentsTimeAssets
             'cart_ids' => function_exists('WC') ? GentsTimeHeader::get_cart_product_ids() : [],
         ]);
 
-        if ( is_product() ) {
+        if (is_product()) {
             wp_enqueue_script(
                 'gentstime-single-product',
                 get_stylesheet_directory_uri() . '/assets/js/single-product.js',
@@ -236,24 +240,24 @@ class GentsTimeAssets
             global $wpdb;
             $price_row = $wpdb->get_row("SELECT MIN(CAST(meta_value AS DECIMAL(10,2))) as mn, MAX(CAST(meta_value AS DECIMAL(10,2))) as mx FROM {$wpdb->postmeta} WHERE meta_key = '_price' AND meta_value != ''");
             $price_min = $price_row ? (int) floor((float) $price_row->mn) : 0;
-            $price_max = $price_row ? (int) ceil((float) $price_row->mx)  : 10000;
+            $price_max = $price_row ? (int) ceil((float) $price_row->mx) : 10000;
 
             $current_term = is_tax() ? get_queried_object() : null;
             wp_localize_script('gentstime-shop', 'gtShopData', [
-                'ajaxurl'     => admin_url('admin-ajax.php'),
-                'nonce'       => wp_create_nonce('shop_ajax_nonce'),
-                'initCat'     => $current_term ? $current_term->slug : '',
-                'priceMin'    => $price_min,
-                'priceMax'    => $price_max,
+                'ajaxurl' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('shop_ajax_nonce'),
+                'initCat' => $current_term ? $current_term->slug : '',
+                'priceMin' => $price_min,
+                'priceMax' => $price_max,
                 'newArrivals' => is_page('new-arrivals') ? 1 : 0,
             ]);
         }
 
-        if ( is_product() ) {
+        if (is_product()) {
             wp_enqueue_script(
                 'gentstime-single-product',
                 get_stylesheet_directory_uri() . '/assets/js/single-product.js',
-                [ 'jquery' ],
+                ['jquery'],
                 GENTSTIME_VERSION,
                 true
             );
@@ -276,10 +280,10 @@ class GentsTimeAssets
             );
             wp_localize_script('gentstime-checkout', 'gtCheckout', [
                 'ajaxurl' => admin_url('admin-ajax.php'),
-                'nonce'   => wp_create_nonce('gt_cart_nonce'),
+                'nonce' => wp_create_nonce('gt_cart_nonce'),
                 'notices' => array_values(array_map(function ($n) {
                     return [
-                        'type'    => $n['notice_type'] ?? 'error',
+                        'type' => $n['notice_type'] ?? 'error',
                         'message' => wp_strip_all_tags($n['notice']),
                     ];
                 }, wc_get_notices())),

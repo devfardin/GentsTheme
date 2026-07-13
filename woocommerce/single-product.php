@@ -179,7 +179,7 @@ while ( have_posts() ) :
                 <?php if ( $brand ) : ?>
                 <div class="gt-sp-meta-row">
                     <span class="gt-sp-meta-label">Brand</span>
-                    <span class="gt-sp-meta-val"><?php echo esc_html( $brand ); ?></span>
+                    <span class="gt-sp-meta-val gt-sp-meta-brand"><?php echo esc_html( $brand ); ?></span>
                 </div>
                 <?php endif; ?>
                 <div class="gt-sp-meta-row">
@@ -306,7 +306,7 @@ while ( have_posts() ) :
                         <input type="number" class="gt-qty-input" id="gtQtyInput" value="1" min="1" max="99" readonly>
                         <button type="button" class="gt-qty-btn" id="gtQtyPlus" aria-label="Increase quantity">&#43;</button>
                     </div>
-                    <button type="button" class="gt-atc-btn" id="gtAddToCart"
+                    <button type="button" class="gt-add-to-cart-btn " id="gtAddToCart"
                             data-is-variable="<?php echo $product->is_type('variable') ? '1' : '0'; ?>">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
                         Add to Cart
@@ -327,7 +327,7 @@ while ( have_posts() ) :
                     Product Description
                     <svg class="gt-accordion-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
                 </button>
-                <div class="gt-accordion-panel" style="display:block">
+                <div class="gt-accordion-panel is-open">
                     <div class="gt-accordion-body">
                         <?php
                         $desc  = $product->get_description();
@@ -343,10 +343,10 @@ while ( have_posts() ) :
                     Returns &amp; Exchange Information
                     <svg class="gt-accordion-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
                 </button>
-                <div class="gt-accordion-panel" style="display:none">
+                <div class="gt-accordion-panel">
                     <div class="gt-accordion-body">
                         <ul>
-                            <li>Easy returns within <strong>7 days</strong> of delivery.</li>
+                            <li>Easy returns within <strong> 7 days</strong> of delivery.</li>
                             <li>Item must be unused, unwashed, and in original packaging.</li>
                             <li>Exchange is subject to stock availability.</li>
                             <li>Contact us via WhatsApp or email to initiate a return.</li>
@@ -397,18 +397,28 @@ while ( have_posts() ) :
             <button class="gt-size-modal-close" id="gtSizeModalClose" aria-label="Close">&times;</button>
         </div>
         <div class="gt-size-modal-body">
-            <p class="gt-size-modal-note">All measurements are in inches.</p>
+            <div class="gt-size-modal-note">
+                <?php
+                    $desc  = $product->get_description();
+                    $short = $product->get_short_description();
+                    echo wp_kses_post( $desc ?: $short ?: '<p>No description available.</p>' ); ?>
+            </div>
+            
             <div class="gt-size-table-wrap">
+                <p class="gt-size-table-title">
+                    Shirt Size Chart
+                </p>
                 <table class="gt-size-table">
                     <thead>
-                        <tr><th>Size</th><th>Chest</th><th>Length</th><th>Sleeve</th></tr>
+                        <tr><th>Size</th><th>Chest</th><th>Length</th><th>Sleeve</th><th>Collar</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>S</td><td>41</td><td>25</td><td>9.5</td></tr>
-                        <tr><td>M</td><td>43</td><td>25.5</td><td>10</td></tr>
-                        <tr><td>L</td><td>45</td><td>26</td><td>10.5</td></tr>
-                        <tr><td>XL</td><td>47</td><td>27</td><td>11</td></tr>
-                        <tr><td>XXL</td><td>49</td><td>27.5</td><td>11.5</td></tr>
+                        <tr><td>S</td><td>40</td><td>27</td><td>24</td><td>15.5</td></tr>
+                        <tr><td>M</td><td>42</td><td>28</td><td>24.5</td><td>15.5</td></tr>
+                        <tr><td>L</td><td>44</td><td>29</td><td>25</td><td>16.5</td></tr>
+                        <tr><td>XL</td><td>46</td><td>30</td><td>25.5</td><td>16.5</td></tr>
+                        <tr><td>XXL</td><td>48</td><td>30.5</td><td>26</td><td>17.5</td></tr>
+                        <tr><td>3XL</td><td>50</td><td>31</td><td>26.5</td><td>18</td></tr>
                     </tbody>
                 </table>
             </div>
