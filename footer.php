@@ -113,7 +113,7 @@ if (is_product()) {
                                 class="gentstime-footer__link-line"></span>Home</a></li>
                     <li><a href="<?php echo esc_url(home_url('/about-us')); ?>"><span
                                 class="gentstime-footer__link-line"></span>About Us</a></li>
-                    <li><a href="<?php echo esc_url(home_url('/inventory')); ?>"><span
+                    <li><a href="<?php echo esc_url(home_url('/contact')); ?>"><span
                                 class="gentstime-footer__link-line"></span>Contact Us</a></li>
                     <li><a href="<?php echo esc_url(home_url('/shop')); ?>"><span
                                 class="gentstime-footer__link-line"></span>Shop</a></li>
