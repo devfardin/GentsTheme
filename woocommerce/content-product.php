@@ -48,7 +48,7 @@ if ($is_on_sale) {
 $cat_name = '';
 $terms = get_the_terms($product_id, 'product_cat');
 if ($terms && !is_wp_error($terms)) {
-    $filtered = array_filter($terms, fn($t) => $t->slug !== 'uncategorized');
+    $filtered = array_filter($terms, function($t) { return $t->slug !== 'uncategorized'; });
     $cat = $filtered ? reset($filtered) : reset($terms);
     $cat_name = $cat->name;
 }

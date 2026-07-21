@@ -14,7 +14,7 @@ get_header();
     </div>
 </div>
 
-<div class="containr"">
+
     <?php while (have_posts()):
         the_post(); ?>
         <div class="page-content">
@@ -35,7 +35,7 @@ get_header();
                 get_template_part('template-parts/pages/refund-and-return-policy');
             } else {
                ?>
-               <div class="container">
+               <div>
                    <?php the_content(); ?>
                </div>
                <?php 
@@ -43,7 +43,6 @@ get_header();
             ?>
         </div>
     <?php endwhile; ?>
-</div>
 
 <?php
 

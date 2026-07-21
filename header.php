@@ -6,7 +6,8 @@ $gent_general = get_option('gent_general');
 
 // check when we have product id when we will sent whatsapp message about product details
 $options = get_option('gent_whatsapp');
-$whatsapp_number = $options['whatsapp_number'] ?? '';
+$options = is_array($options) ? $options : [];
+$whatsapp_number = isset($options['whatsapp_number']) ? $options['whatsapp_number'] : '';
 
 if (is_product()) {
     $product_id = get_the_ID();
@@ -30,9 +31,9 @@ if (is_product()) {
 
     $message = urlencode($lines);
 } else {
-    $btn = $options['button_text'] ?? 'Chat with us';
-    $show_on_desktop = $options['show_on_desktop'];
-    $message = urlencode($options['predefined_message'] ?? '');
+    $btn             = isset($options['button_text']) ? $options['button_text'] : 'Chat with us';
+    $show_on_desktop = isset($options['show_on_desktop']) ? $options['show_on_desktop'] : '';
+    $message         = urlencode(isset($options['predefined_message']) ? $options['predefined_message'] : '');
 }
 
 ?>
@@ -54,10 +55,11 @@ if (is_product()) {
          ============================================= -->
     <?php
 
-    $popup_message = get_option('gent-popup');
-    $header_notice_enabled = $popup_message['header_notice_enabled']
-        ?>
-    <? if ($header_notice_enabled == 1): ?>
+    $popup_message         = get_option('gent-popup');
+    $popup_message         = is_array($popup_message) ? $popup_message : [];
+    $header_notice_enabled = isset($popup_message['header_notice_enabled']) ? $popup_message['header_notice_enabled'] : 0;
+    ?>
+    <?php if ($header_notice_enabled == 1): ?>
         <div class="header-topbar">
             <div class="topbar-inner">
                 <span class="topbar-notice">
@@ -65,7 +67,7 @@ if (is_product()) {
                         <path
                             d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9 1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z" />
                     </svg>
-                    <?php echo $popup_message['header_notice']; ?>
+                    <?php echo esc_html($popup_message['header_notice']); ?>
                 </span>
             </div>
         </div>
@@ -127,14 +129,14 @@ if (is_product()) {
                 </a>
 
                 <!-- WhatsApp -->
-                <a href="https://wa.me/<?php echo esc_attr($whatsapp_number); ?>?text=<?php echo $message; ?>"
+                <!-- <a href="https://wa.me/<?php // echo esc_attr($whatsapp_number); ?>?text=<?php // echo $message; ?>"
                     target="_blank" rel="noopener noreferrer" class="header-icon-btn whatsapp-btn"
                     aria-label="WhatsApp">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                         <path
                             d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
                     </svg>
-                </a>
+                </a> -->
 
                 <!-- Account -->
                 <a href="<?php echo function_exists('wc_get_account_endpoint_url') ? esc_url(wc_get_account_endpoint_url('dashboard')) : wp_login_url(); ?>"
@@ -187,7 +189,7 @@ if (is_product()) {
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
                     <path
                         d="M14.9996 13.2331L21.1869 7.0459L22.9546 8.81366L16.7674 15.0009L22.9546 21.188L21.1869 22.9557L14.9996 16.7686L8.81245 22.9557L7.04468 21.188L13.2319 15.0009L7.04468 8.81366L8.81245 7.0459L14.9996 13.2331Z"
-                        fill="#00A486" />
+                        fill="#C9A84C" />
                 </svg>
             </button>
         </div>

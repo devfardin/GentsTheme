@@ -10,7 +10,7 @@ class GentsTimeAssets
 {
     public function __construct()
     {
-        add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
+        add_action('wp_enqueue_scripts', [$this, 'enqueue_styles'], 999);
         add_action('wp_enqueue_scripts', [$this, 'enqueue_scripts']);
     }
 
@@ -136,6 +136,16 @@ class GentsTimeAssets
         );
 
 
+        if (is_page('contact') || is_page('contact-us')) {
+            wp_enqueue_style(
+                'gentstime-contact',
+                get_stylesheet_directory_uri() . '/assets/css/contact.css',
+                [],
+                GENTSTIME_VERSION,
+                'all'
+            );
+        }
+
         if (is_page('about-us') || is_page('about')) {
             wp_enqueue_style(
                 'gentstime-about',
@@ -174,6 +184,10 @@ class GentsTimeAssets
                 GENTSTIME_VERSION,
                 'all'
             );
+        }
+        if(is_page('contact')){
+            wp_deregister_style('fluent-form-styles-css');
+            wp_deregister_style('fluentform-public-default-css');
         }
     }
 
@@ -225,7 +239,7 @@ class GentsTimeAssets
             'ajaxurl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('header_search_nonce'),
             'cart_nonce' => wp_create_nonce('gentstime_cart_nonce'),
-            'cart_ids' => function_exists('WC') ? GentsTimeHeader::get_cart_product_ids() : [],
+            'cart_ids' => ( function_exists('WC') && class_exists('GentsTimeHeader') ) ? GentsTimeHeader::get_cart_product_ids() : [],
         ]);
 
         if (is_product()) {
@@ -293,7 +307,7 @@ class GentsTimeAssets
                 'nonce' => wp_create_nonce('gt_cart_nonce'),
                 'notices' => array_values(array_map(function ($n) {
                     return [
-                        'type' => $n['notice_type'] ?? 'error',
+                        'type'    => isset($n['notice_type']) ? $n['notice_type'] : 'error',
                         'message' => wp_strip_all_tags($n['notice']),
                     ];
                 }, wc_get_notices())),

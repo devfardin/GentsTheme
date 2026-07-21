@@ -25,7 +25,7 @@ while ( have_posts() ) :
 
     // Category
     $terms    = get_the_terms( get_the_ID(), 'product_cat' );
-    $filtered = $terms && ! is_wp_error( $terms ) ? array_filter( $terms, fn( $t ) => $t->slug !== 'uncategorized' ) : [];
+    $filtered = $terms && ! is_wp_error( $terms ) ? array_filter( $terms, function( $t ) { return $t->slug !== 'uncategorized'; } ) : [];
     $cat      = $filtered ? reset( $filtered ) : ( $terms ? reset( $terms ) : null );
 
     // Size options + per-variation stock for variable products

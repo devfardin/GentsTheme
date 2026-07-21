@@ -14,13 +14,14 @@ $checkout = WC()->checkout();
         <div class="gt-empty-cart">
             <div class="container">
                 <p><?php esc_html_e('Your cart is currently empty.', 'woocommerce'); ?></p>
-                <a href="<?php echo esc_url(wc_get_page_permalink('shop')); ?>" class="gt-btn-continue">Continue Shopping</a>
+                <a href="<?php echo esc_url(wc_get_page_permalink('shop')); ?>" class="gt-btn-continue">Continue
+                    Shopping</a>
             </div>
         </div>
     <?php else: ?>
-
         <div class="gt-checkout-body">
             <div class="container">
+
 
                 <form name="checkout" method="post" class="gt-checkout-form checkout woocommerce-checkout"
                     action="<?php echo esc_url(wc_get_checkout_url()); ?>" enctype="multipart/form-data">
@@ -44,18 +45,19 @@ $checkout = WC()->checkout();
                                         <span>Price</span>
                                         <span>Quantity</span>
                                         <span>Subtotal</span>
-                                        <span></span>
+                                        <span>Action</span>
                                     </div>
 
                                     <?php foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item):
                                         $product = $cart_item['data'];
-                                        if (!$product || !$product->exists() || $cart_item['quantity'] === 0) continue;
-                                        $product_id   = $cart_item['product_id'];
-                                        $quantity     = $cart_item['quantity'];
-                                        $unit_price   = wc_price($product->get_price());
-                                        $subtotal     = WC()->cart->get_product_subtotal($product, $quantity);
-                                        $remove_url   = wc_get_cart_remove_url($cart_item_key);
-                                    ?>
+                                        if (!$product || !$product->exists() || $cart_item['quantity'] === 0)
+                                            continue;
+                                        $product_id = $cart_item['product_id'];
+                                        $quantity = $cart_item['quantity'];
+                                        $unit_price = wc_price($product->get_price());
+                                        $subtotal = WC()->cart->get_product_subtotal($product, $quantity);
+                                        $remove_url = wc_get_cart_remove_url($cart_item_key);
+                                        ?>
                                         <div class="gt-cart-row" data-key="<?php echo esc_attr($cart_item_key); ?>">
 
                                             <!-- Product image + title -->
@@ -67,7 +69,9 @@ $checkout = WC()->checkout();
                                                     <p class="gt-cart-title"><?php echo esc_html($product->get_name()); ?></p>
                                                     <?php if (!empty($cart_item['variation'])):
                                                         foreach ($cart_item['variation'] as $attr => $val): ?>
-                                                            <span class="gt-cart-var"><?php echo esc_html(wc_attribute_label(str_replace('attribute_', '', $attr))); ?>: <?php echo esc_html($val); ?></span>
+                                                            <span
+                                                                class="gt-cart-var"><?php echo esc_html(wc_attribute_label(str_replace('attribute_', '', $attr))); ?>:
+                                                                <?php echo esc_html($val); ?></span>
                                                         <?php endforeach;
                                                     endif; ?>
                                                 </div>
@@ -80,14 +84,13 @@ $checkout = WC()->checkout();
 
                                             <!-- Quantity update -->
                                             <div class="gt-cart-qty">
-                                                <button type="button" class="gt-qty-btn gt-qty-minus" data-key="<?php echo esc_attr($cart_item_key); ?>">&#8722;</button>
-                                                <input type="number"
-                                                    name="cart[<?php echo esc_attr($cart_item_key); ?>][qty]"
-                                                    class="gt-qty-input"
-                                                    value="<?php echo esc_attr($quantity); ?>"
-                                                    min="1"
+                                                <button type="button" class="gt-qty-btn gt-qty-minus"
+                                                    data-key="<?php echo esc_attr($cart_item_key); ?>">&#8722;</button>
+                                                <input type="number" name="cart[<?php echo esc_attr($cart_item_key); ?>][qty]"
+                                                    class="gt-qty-input" value="<?php echo esc_attr($quantity); ?>" min="1"
                                                     data-key="<?php echo esc_attr($cart_item_key); ?>">
-                                                <button type="button" class="gt-qty-btn gt-qty-plus" data-key="<?php echo esc_attr($cart_item_key); ?>">&#43;</button>
+                                                <button type="button" class="gt-qty-btn gt-qty-plus"
+                                                    data-key="<?php echo esc_attr($cart_item_key); ?>">&#43;</button>
                                             </div>
 
                                             <!-- Subtotal -->
@@ -96,7 +99,7 @@ $checkout = WC()->checkout();
                                             </div>
 
                                             <!-- Remove -->
-                                            <div class="gt-cart-remove">
+                                            <div>
                                                 <button type="button" class="gt-remove-btn"
                                                     data-key="<?php echo esc_attr($cart_item_key); ?>">Remove</button>
                                             </div>
@@ -106,7 +109,12 @@ $checkout = WC()->checkout();
                                 </div><!-- /gt-cart-table -->
 
                                 <a href="<?php echo esc_url(wc_get_page_permalink('shop')); ?>" class="gt-continue-btn">
-                                    Continue Shopping
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="lucide lucide-plus h-5 w-5">
+                                        <path d="M5 12h14"></path>
+                                        <path d="M12 5v14"></path>
+                                    </svg> Add more items
                                 </a>
                             </div><!-- /Cart Items -->
 
@@ -119,35 +127,26 @@ $checkout = WC()->checkout();
 
                                     <div class="gt-field-wrap gt-field-full">
                                         <label for="billing_full_name">Full Name <span class="required">*</span></label>
-                                        <input type="text"
-                                            id="billing_full_name"
-                                            name="billing_full_name"
-                                            class="gt-input"
+                                        <input type="text" id="billing_full_name" name="billing_full_name" class="gt-input"
                                             placeholder="Enter your full name"
                                             value="<?php echo esc_attr($checkout->get_value('billing_first_name') . ' ' . $checkout->get_value('billing_last_name')); ?>"
                                             required>
                                         <!-- Hidden fields WooCommerce needs -->
                                         <input type="hidden" name="billing_first_name" id="billing_first_name_hidden">
-                                        <input type="hidden" name="billing_last_name"  id="billing_last_name_hidden">
+                                        <input type="hidden" name="billing_last_name" id="billing_last_name_hidden">
                                     </div>
 
                                     <div class="gt-field-wrap">
                                         <label for="billing_phone">Phone Number <span class="required">*</span></label>
-                                        <input type="tel"
-                                            id="billing_phone"
-                                            name="billing_phone"
-                                            class="gt-input"
+                                        <input type="tel" id="billing_phone" name="billing_phone" class="gt-input"
                                             placeholder="Enter your phone number"
-                                            value="<?php echo esc_attr($checkout->get_value('billing_phone')); ?>"
-                                            required>
+                                            value="<?php echo esc_attr($checkout->get_value('billing_phone')); ?>" required>
                                     </div>
 
                                     <div class="gt-field-wrap">
-                                        <label for="billing_email">Email Address <span class="gt-optional">(Optional)</span></label>
-                                        <input type="email"
-                                            id="billing_email"
-                                            name="billing_email"
-                                            class="gt-input"
+                                        <label for="billing_email">Email Address <span
+                                                class="gt-optional">(Optional)</span></label>
+                                        <input type="email" id="billing_email" name="billing_email" class="gt-input"
                                             placeholder="Enter your email address"
                                             value="<?php echo esc_attr($checkout->get_value('billing_email')); ?>">
                                     </div>
@@ -165,9 +164,7 @@ $checkout = WC()->checkout();
                                     <div class="gt-field-wrap">
                                         <label for="billing_district">District <span class="required">*</span></label>
                                         <div class="gt-select-wrap">
-                                            <select id="billing_district"
-                                                name="billing_district"
-                                                class="gt-input gt-select"
+                                            <select id="billing_district" name="billing_district" class="gt-input gt-select"
                                                 required>
                                                 <option value="">Select your district</option>
                                             </select>
@@ -180,18 +177,16 @@ $checkout = WC()->checkout();
                                     <div class="gt-field-wrap">
                                         <label for="billing_thana">Thana <span class="required">*</span></label>
                                         <div class="gt-select-wrap">
-                                            <select id="billing_thana"
-                                                name="billing_thana"
-                                                class="gt-input gt-select"
-                                                required
-                                                disabled>
+                                            <select id="billing_thana" name="billing_thana" class="gt-input gt-select"
+                                                required disabled>
                                                 <option value="">Select district first</option>
                                             </select>
                                             <span class="gt-select-arrow">&#8964;</span>
                                         </div>
                                         <input type="hidden" name="billing_city" id="billing_city_hidden"
                                             value="<?php echo esc_attr($checkout->get_value('billing_city')); ?>">
-                                        <div class="gt-delivery-charge-hint" id="gt-delivery-charge-hint" style="display:none;">
+                                        <div class="gt-delivery-charge-hint" id="gt-delivery-charge-hint"
+                                            style="display:none;">
                                             <span class="gt-dch-label">Delivery charge:</span>
                                             <span class="gt-dch-cost" id="gt-dch-cost"></span>
                                         </div>
@@ -199,21 +194,15 @@ $checkout = WC()->checkout();
 
                                     <div class="gt-field-wrap gt-field-full">
                                         <label for="billing_address_1">Full Address <span class="required">*</span></label>
-                                        <textarea
-                                            id="billing_address_1"
-                                            name="billing_address_1"
-                                            class="gt-input gt-textarea"
-                                            placeholder="House / Road / Area"
-                                            rows="3"
+                                        <textarea id="billing_address_1" name="billing_address_1"
+                                            class="gt-input gt-textarea" placeholder="House / Road / Area" rows="3"
                                             required><?php echo esc_textarea($checkout->get_value('billing_address_1')); ?></textarea>
                                     </div>
 
                                     <div class="gt-field-wrap gt-field-full">
-                                        <label for="order_comments">Order Notes <span class="gt-optional">(Optional)</span></label>
-                                        <textarea
-                                            id="order_comments"
-                                            name="order_comments"
-                                            class="gt-input gt-textarea"
+                                        <label for="order_comments">Order Notes <span
+                                                class="gt-optional">(Optional)</span></label>
+                                        <textarea id="order_comments" name="order_comments" class="gt-input gt-textarea"
                                             placeholder="Any special instructions for your order..."
                                             rows="3"><?php echo esc_textarea($checkout->get_value('order_comments')); ?></textarea>
                                     </div>
@@ -221,7 +210,7 @@ $checkout = WC()->checkout();
                                 </div>
 
                                 <!-- Hidden required WooCommerce fields -->
-                                <input type="hidden" name="billing_country"  value="BD">
+                                <input type="hidden" name="billing_country" value="BD">
                                 <!-- <input type="hidden" name="billing_postcode" value="0000"> -->
                                 <input type="hidden" name="billing_address_2" value="">
 
@@ -241,7 +230,8 @@ $checkout = WC()->checkout();
 
                                 <div class="gt-summary-row">
                                     <span>Subtotal</span>
-                                    <span class="gt-summary-val" id="gt-summary-subtotal"><?php echo wc_price(WC()->cart->get_subtotal()); ?></span>
+                                    <span class="gt-summary-val"
+                                        id="gt-summary-subtotal"><?php echo wc_price(WC()->cart->get_subtotal()); ?></span>
                                 </div>
 
                                 <div class="gt-summary-row">
@@ -261,31 +251,32 @@ $checkout = WC()->checkout();
                                 </div>
 
                                 <div id="gt-discount-rows">
-                                <?php foreach (WC()->cart->get_coupons() as $code => $coupon): ?>
-                                    <div class="gt-summary-row gt-discount" data-coupon="<?php echo esc_attr($code); ?>">
-                                        <span>
-                                            Coupon (<?php echo esc_html(strtoupper($code)); ?>)
-                                            <button type="button" class="gt-remove-coupon-btn" data-code="<?php echo esc_attr($code); ?>" title="Remove coupon">&#10005;</button>
-                                        </span>
-                                        <span class="gt-summary-val gt-discount-val">-<?php echo wc_price(WC()->cart->get_coupon_discount_amount($code)); ?></span>
-                                    </div>
-                                <?php endforeach; ?>
+                                    <?php foreach (WC()->cart->get_coupons() as $code => $coupon): ?>
+                                        <div class="gt-summary-row gt-discount" data-coupon="<?php echo esc_attr($code); ?>">
+                                            <span>
+                                                Coupon (<?php echo esc_html(strtoupper($code)); ?>)
+                                                <button type="button" class="gt-remove-coupon-btn"
+                                                    data-code="<?php echo esc_attr($code); ?>"
+                                                    title="Remove coupon">&#10005;</button>
+                                            </span>
+                                            <span
+                                                class="gt-summary-val gt-discount-val">-<?php echo wc_price(WC()->cart->get_coupon_discount_amount($code)); ?></span>
+                                        </div>
+                                    <?php endforeach; ?>
                                 </div>
 
                                 <div class="gt-summary-sep"></div>
 
                                 <div class="gt-summary-row gt-total">
                                     <span>Total</span>
-                                    <span class="gt-summary-val gt-total-val" id="gt-summary-total"><?php echo wc_price(WC()->cart->get_total('raw')); ?></span>
+                                    <span class="gt-summary-val gt-total-val"
+                                        id="gt-summary-total"><?php echo wc_price(WC()->cart->get_total('raw')); ?></span>
                                 </div>
 
                                 <!-- Coupon -->
                                 <div class="gt-coupon-row">
-                                    <input type="text"
-                                        id="gt_coupon_code"
-                                        class="gt-coupon-input"
-                                        placeholder="Enter Coupon Code"
-                                        autocomplete="off">
+                                    <input type="text" id="gt_coupon_code" class="gt-coupon-input"
+                                        placeholder="Enter Coupon Code" autocomplete="off">
                                     <button type="button" class="gt-coupon-btn" id="gt-apply-coupon">Apply</button>
                                 </div>
                                 <div class="gt-coupon-message" id="gt-coupon-message"></div>
@@ -299,7 +290,7 @@ $checkout = WC()->checkout();
 
                                 <?php
                                 $available_gateways = WC()->payment_gateways()->get_available_payment_gateways();
-                                $chosen_gateway     = WC()->session ? WC()->session->get('chosen_payment_method') : '';
+                                $chosen_gateway = WC()->session ? WC()->session->get('chosen_payment_method') : '';
                                 if (!$chosen_gateway && !empty($available_gateways)) {
                                     $chosen_gateway = array_key_first($available_gateways);
                                 }
@@ -308,24 +299,23 @@ $checkout = WC()->checkout();
                                 <ul class="gt-payment-methods wc_payment_methods payment_methods methods">
                                     <?php foreach ($available_gateways as $gateway_id => $gateway):
                                         $is_chosen = ($gateway_id === $chosen_gateway);
-                                    ?>
-                                        <li class="gt-payment-option wc_payment_method payment_method_<?php echo esc_attr($gateway_id); ?>">
+                                        ?>
+                                        <li
+                                            class="gt-payment-option wc_payment_method payment_method_<?php echo esc_attr($gateway_id); ?>">
 
-                                            <input type="radio"
-                                                id="payment_method_<?php echo esc_attr($gateway_id); ?>"
-                                                name="payment_method"
-                                                value="<?php echo esc_attr($gateway_id); ?>"
-                                                class="input-radio"
-                                                <?php checked($is_chosen, true); ?>
+                                            <input type="radio" id="payment_method_<?php echo esc_attr($gateway_id); ?>"
+                                                name="payment_method" value="<?php echo esc_attr($gateway_id); ?>"
+                                                class="input-radio" <?php checked($is_chosen, true); ?>
                                                 data-order_button_text="<?php echo esc_attr($gateway->order_button_text); ?>">
 
-                                            <label for="payment_method_<?php echo esc_attr($gateway_id); ?>" class="gt-payment-label">
+                                            <label for="payment_method_<?php echo esc_attr($gateway_id); ?>"
+                                                class="gt-payment-label">
                                                 <?php echo $gateway->get_icon(); ?>
                                                 <?php echo esc_html($gateway->get_title()); ?>
                                             </label>
 
                                             <?php if ($gateway->has_fields() || $gateway->get_description()): ?>
-                                                <div class="payment_box payment_method_<?php echo esc_attr($gateway_id); ?>"<?php echo $is_chosen ? '' : ' style="display:none"'; ?>>
+                                                <div class="payment_box payment_method_<?php echo esc_attr($gateway_id); ?>" <?php echo $is_chosen ? '' : ' style="display:none"'; ?>>
                                                     <?php $gateway->payment_fields(); ?>
                                                 </div>
                                             <?php endif; ?>
@@ -342,21 +332,19 @@ $checkout = WC()->checkout();
                                         <input type="checkbox" id="gt_terms_agree" name="gt_terms_agree" value="1">
                                         <span class="gt-terms-agree-text">
                                             I agree to the
-                                            <a href="<?php echo esc_url(url: home_url('/terms-and-conditions')); ?>" target="_blank" class="gt-terms-link">Terms and Conditions</a>
+                                            <a href="<?php echo esc_url(home_url('/terms-and-conditions')); ?>"
+                                                target="_blank" class="gt-terms-link">Terms and Conditions</a>
                                         </span>
                                     </label>
                                 </div>
 
                                 <!-- Place Order Button -->
                                 <div class="place_order_button_wrap">
-                                    <button type="submit"
-                                    class="gt-place-order-btn alt btn-primary"
-                                    name="woocommerce_checkout_place_order"
-                                    id="place_order"
-                                    value="Confirm Your Order"
-                                    data-value="Confirm Your Order">
-                                    Confirm Your Order
-                                </button>                                    
+                                    <button type="submit" class="gt-place-order-btn alt btn-primary"
+                                        name="woocommerce_checkout_place_order" id="place_order" value="Confirm Your Order"
+                                        data-value="Confirm Your Order">
+                                        Confirm Your Order
+                                    </button>
                                 </div>
 
                                 <p class="gt-secure-text">Your information is safe &amp; secure</p>
@@ -374,11 +362,10 @@ $checkout = WC()->checkout();
                     </div><!-- /gt-checkout-grid -->
 
                     <?php do_action('woocommerce_checkout_after_order_review'); ?>
-
                 </form>
 
-            </div><!-- /container -->
-        </div><!-- /gt-checkout-body -->
+            </div><!-- /gt-checkout-body -->
+        </div>
 
     <?php endif; ?>
 

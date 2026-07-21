@@ -18,7 +18,8 @@ $price_min = (int) $wpdb->get_var( "SELECT MIN(CAST(meta_value AS DECIMAL(10,2))
 $price_max = (int) $wpdb->get_var( "SELECT MAX(CAST(meta_value AS DECIMAL(10,2))) FROM {$wpdb->postmeta} WHERE meta_key='_price' AND meta_value != ''" );
 
 /* ── Categories ─────────────────────────────────────────────────── */
-$uncategorized_id = get_term_by( 'slug', 'uncategorized', 'product_cat' )->term_id ?? 0;
+$uncategorized_term = get_term_by( 'slug', 'uncategorized', 'product_cat' );
+$uncategorized_id = $uncategorized_term ? $uncategorized_term->term_id : 0;
 $categories = get_terms( [ 'taxonomy' => 'product_cat', 'hide_empty' => true, 'exclude' => $uncategorized_id ] );
 
 /* ── Active filter values (initial page load) ───────────────────── */

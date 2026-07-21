@@ -74,13 +74,12 @@
     padding: 16px 0;
     border-bottom: 1px solid var(--border);
 }
-.gt-cart-row:last-child { border-bottom: none; }
 
 .gt-cart-product { display: flex; align-items: center; gap: 12px; }
 
 .gt-cart-img {
-    width: 64px;
-    height: 76px;
+    width: 84px;
+    height: 96px;
     flex-shrink: 0;
     border-radius: 8px;
     overflow: hidden;
@@ -168,18 +167,18 @@
 
 /* Continue shopping */
 .gt-continue-btn {
-    display: inline-flex;
+    font-size: 15px;
+    color: var(--text-primary);
+    font-weight: 400;
+    display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--brand);
-    padding: 9px 16px;
-    border: 1.5px solid var(--brand);
-    border-radius: 8px;
+    gap: 5px;
     transition: background var(--transition), color var(--transition);
 }
-.gt-continue-btn:hover { background: var(--brand); color: var(--text-white); }
+.gt-continue-btn svg{
+    width: 20px;
+    height: 20px;
+}
 
 /* ══════════════════════════════════════════
    Form fields

@@ -1,0 +1,181 @@
+/* =============================================
+   Contact Page Styles
+   ============================================= */
+
+.contact-form-subtext {
+    font-size: 17px;
+    color: var(--text-primary);
+    line-height: 1.7;
+    max-width: 650px;
+}
+
+/* Main Grid */
+.contact-main {
+    padding-bottom: 30px;
+}
+
+.contact-grid {
+    display: grid;
+    gap: 20px;
+}
+
+@media (min-width: 900px) {
+    .contact-grid {
+        grid-template-columns: 340px 1fr;
+        gap: 30px;
+        align-items: start;
+    }
+}
+
+/* Info Cards */
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.contact-info-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: var(--bg-section);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    transition: var(--transition);
+}
+
+.contact-info-card:hover {
+    border-color: var(--brand-soft);
+    box-shadow: var(--shadow-sm);
+}
+
+.contact-info-card__icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    background: var(--bg-brand);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--brand);
+}
+
+.contact-info-card__icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.contact-info-card__title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.contact-info-card__text {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.contact-form-wrap{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 5px;
+}
+/* Form Wrap */
+.contact-form-wrap {
+    background: var(--bg-section);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+}
+@media only screen and (min-width: 768px){
+    .contact-form-wrap {
+    padding: 32px 32px 20px 32px;
+}
+}
+
+.contact-form-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* Fluent Forms overrides */
+.contact-form-wrap .ff-default {
+    --fluentform-primary: var(--brand);
+    --fluentform-border-color: var(--border-light);
+    --fluentform-border-radius: var(--radius-sm);
+    font-family: var(--font-ui);
+    margin-top: 10px;
+    width: 100%;
+}
+
+.contact-form-wrap .ff-default .ff-el-form-control {
+    font-family: var(--font-ui);
+    font-size: 15px;
+    color: var(--text-primary);
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    padding: 13px 15px;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+.contact-form-wrap .fluentform .ff-el-group {
+    margin-bottom: 15px;
+}
+
+.contact-form-wrap .fluentform .ff-el-input--label {
+    margin-bottom: 2px;
+}
+
+.contact-form-wrap .ff-default .ff-el-form-control:focus {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.15);
+    color: var(--text-primary);
+}
+
+.contact-form-wrap .ff-default .ff-el-form-control::placeholder {
+    color: var(--text-muted);
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.contact-form-wrap .ff-default textarea.ff-el-form-control {
+    min-height: 130px;
+    resize: vertical;
+}
+
+.contact-form-wrap .ff-default .ff-el-input--label label {
+    font-family: var(--font-ui);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.contact-form-wrap form .ff-btn-submit:not(.ff_btn_no_style){
+    background-color: var(--brand);
+    border-color: var(--brand);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-ui);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 13px 28px;
+    color: var(--text-white);
+    transition: var(--transition);
+}
+
+.contact-form-wrap form .ff-btn-submit:not(.ff_btn_no_style):hover,
+.contact-form-wrap form .ff-btn-submit:not(.ff_btn_no_style):focus {
+    background-color: transparent;
+    border-color: var(--brand);
+    color: var(--brand);
+    opacity: 1;
+}

@@ -3,11 +3,12 @@ if (!defined('ABSPATH')) {
     exit;
 }
 $gent_general = get_option('gent_general');
-
+$gent_general = is_array($gent_general) ? $gent_general : [];
 
 // check when we have product id when we will sent whatsapp message about product details
 $options = get_option('gent_whatsapp');
-$whatsapp_number = $options['whatsapp_number'] ?? '';
+$options = is_array($options) ? $options : [];
+$whatsapp_number = isset($options['whatsapp_number']) ? $options['whatsapp_number'] : '';
 
 if (is_product()) {
     $product_id = get_the_ID();
@@ -31,9 +32,9 @@ if (is_product()) {
 
     $message = urlencode( $lines );
 } else {
-    $btn = $options['button_text'] ?? 'Chat with us';
-    $show_on_desktop = $options['show_on_desktop'];
-    $message = urlencode($options['predefined_message'] ?? '');
+    $btn             = isset($options['button_text']) ? $options['button_text'] : 'Chat with us';
+    $show_on_desktop = isset($options['show_on_desktop']) ? $options['show_on_desktop'] : '';
+    $message         = urlencode(isset($options['predefined_message']) ? $options['predefined_message'] : '');
 }
 
 

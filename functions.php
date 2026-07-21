@@ -55,7 +55,7 @@ new GentsTimeFunctions();
  */
 function gt_track_recently_viewed( $product_id ) {
     $viewed = gt_get_recently_viewed();
-    $viewed = array_filter( $viewed, fn( $id ) => $id !== $product_id );
+    $viewed = array_filter( $viewed, function( $id ) use ( $product_id ) { return $id !== $product_id; } );
     array_unshift( $viewed, $product_id );
     $viewed = array_slice( $viewed, 0, 20 );
     setcookie( 'gt_recently_viewed', implode( ',', $viewed ), time() + ( 30 * DAY_IN_SECONDS ), COOKIEPATH, COOKIE_DOMAIN, is_ssl(), false );
@@ -140,7 +140,7 @@ function gentstime_shop_ajax_filter()
     if ($min_p !== '' || $max_p !== '') {
         $meta_query[] = [
             'key' => '_price',
-            'value' => array_filter([$min_p, $max_p], fn($v) => $v !== ''),
+            'value' => array_filter([$min_p, $max_p], function($v) { return $v !== ''; }),
             'compare' => ($min_p !== '' && $max_p !== '') ? 'BETWEEN' : ($min_p !== '' ? '>=' : '<='),
             'type' => 'NUMERIC',
         ];
@@ -242,8 +242,8 @@ function gt_cart_totals_payload()
         'cart_is_empty' => $cart->is_empty(),
         'cart_count'    => (int) $cart->get_cart_contents_count(),
         'mini_cart'     => $mini_cart_html,
-        'product_ids'   => function_exists('GentsTimeHeader') ? GentsTimeHeader::get_cart_product_ids() :
-            array_values(array_unique(array_map(fn($i) => (int) $i['product_id'], $cart->get_cart()))),
+        'product_ids'   => class_exists('GentsTimeHeader') ? GentsTimeHeader::get_cart_product_ids() :
+            array_values(array_unique(array_map(function($i) { return (int) $i['product_id']; }, $cart->get_cart()))),
     ];
 }
 
@@ -495,6 +495,18 @@ function gt_download_invoice() {
     exit;
 }
 
+/* ── Adjust WooCommerce checkout field requirements ── */
+add_filter('woocommerce_checkout_fields', function ($fields) {
+    // Make email optional
+    $fields['billing']['billing_email']['required'] = false;
+
+    // Remove last name requirement and rename first name label to Full Name
+    $fields['billing']['billing_last_name']['required'] = false;
+    $fields['billing']['billing_first_name']['label']   = __('Full Name', 'gentstime');
+
+    return $fields;
+});
+
 /* ── Remove WC's built-in BD state list so our custom districts pass validation ── */
 add_filter('woocommerce_states', function ($states) {
     if (isset($states['BD'])) {
@@ -509,6 +521,18 @@ add_action('wp', function () {
         remove_action('woocommerce_before_checkout_form', 'woocommerce_output_all_notices', 10);
     }
 });
+
+/* ── Remove "No shipping method has been selected" error ── */
+add_filter('woocommerce_checkout_no_shipping_available_html', '__return_empty_string');
+add_filter('woocommerce_no_shipping_available_html', '__return_empty_string');
+add_action('woocommerce_after_checkout_validation', function ($data, $errors) {
+    $notices = $errors->get_error_messages();
+    foreach ($notices as $key => $message) {
+        if (strpos($message, 'No shipping method') !== false) {
+            $errors->remove('shipping');
+        }
+    }
+}, 10, 2);
 
 /* ── Copy billing_district into billing_state before WC processes the order ── */
 add_action('woocommerce_checkout_process', function () {

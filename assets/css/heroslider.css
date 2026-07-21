@@ -2,7 +2,7 @@
 .hs-hero {
     position: relative;
     width: 100%;
-    min-height: 26vh;
+    min-height: 30vh;
     overflow: hidden;
     background: var(--bg-dark);
     display: flex;
@@ -27,7 +27,7 @@
 
 @media only screen and (min-width: 1280px) {
     .hs-hero {
-        min-height: 78vh;
+        min-height: 80vh;
     }
 }
 @media only screen and (min-width: 1400px) {
@@ -394,7 +394,7 @@
     bottom: 0;
     left: 0;
     height: 3px;
-    background:greenyellow;
+    background:var(--brand);
     z-index: 10;
     width: 0%;
     transition: width .1s linear;
